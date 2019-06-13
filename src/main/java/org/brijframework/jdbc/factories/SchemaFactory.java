@@ -8,8 +8,6 @@ import javax.sql.DataSource;
 import org.brijframework.model.builder.ModelBuilder;
 import org.brijframework.model.factories.ModelFactory;
 import org.brijframework.util.asserts.Assertion;
-import org.brijframework.util.formatter.PrintUtil;
-import org.brijframework.util.printer.GraphPrinter;
 
 public class SchemaFactory {
 	
