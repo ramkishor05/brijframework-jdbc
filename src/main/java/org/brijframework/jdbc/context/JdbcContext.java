@@ -9,6 +9,7 @@ import org.brijframework.context.Context;
 public class JdbcContext implements Context{
 
 	private Properties properties=new Properties();
+	
 	private Context context;
 	
 	private ConcurrentHashMap<Object, Container>  cache=new ConcurrentHashMap<>();
