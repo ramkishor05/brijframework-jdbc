@@ -5,7 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.brijframework.container.Container;
 import org.brijframework.context.Context;
+import org.brijframework.model.context.ModelContext;
+import org.brijframework.support.model.DepandOn;
 
+@DepandOn(depand=ModelContext.class)
 public class JdbcContext implements Context{
 
 	private Properties properties=new Properties();
