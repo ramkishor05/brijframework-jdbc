@@ -8,11 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.sql.DataSource;
 
 import org.brijframework.container.Container;
-import org.brijframework.data.factories.asm.ClassDataFactoryImpl;
+import org.brijframework.data.factories.asm.ClassDataSetupFactoryImpl;
 import org.brijframework.data.setup.ClassDataSetup;
 import org.brijframework.jdbc.factories.JdbcFactory;
-import org.brijframework.meta.factories.asm.MetaFactoryImpl;
-import org.brijframework.meta.reflect.ClassMeta;
+import org.brijframework.meta.factories.asm.MetaSetupFactoryImpl;
+import org.brijframework.meta.info.ClassMetaInfo;
 import org.brijframework.model.factories.ModelFactory;
 import org.brijframework.support.model.Assignable;
 import org.brijframework.util.asserts.Assertion;
@@ -45,9 +45,9 @@ public class DataSourceJdbcFactory implements JdbcFactory{
 
 	@Override
 	public DataSourceJdbcFactory loadFactory() {
-		List<ClassMeta> owners= MetaFactoryImpl.getFactory().getMetaList(DataSource.class);
-		for(ClassMeta owner:owners) {
-			List<ClassDataSetup> dataList= ClassDataFactoryImpl.getFactory().getDataSetupList(owner.getId());
+		List<ClassMetaInfo> owners= MetaSetupFactoryImpl.getFactory().getMetaList(DataSource.class);
+		for(ClassMetaInfo owner:owners) {
+			List<ClassDataSetup> dataList= ClassDataSetupFactoryImpl.getFactory().getSetupList(owner.getId());
 			for(ClassDataSetup datainfo:dataList) {
 				DataSource dataSource=ModelFactory.getFactory().getModel(owner,datainfo);
 				if(dataSource!=null) {
