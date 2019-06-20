@@ -7,9 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
+import org.brijframework.bean.BeanInfo;
+import org.brijframework.bean.factories.impl.BeanInfoFactoryImpl;
 import org.brijframework.container.Container;
-import org.brijframework.data.factories.asm.ClassDataInfoFactoryImpl;
-import org.brijframework.data.info.ClassDataInfo;
 import org.brijframework.jdbc.factories.JdbcFactory;
 import org.brijframework.model.factories.ModelFactory;
 import org.brijframework.support.model.Assignable;
@@ -43,8 +43,8 @@ public class DataSourceJdbcFactory implements JdbcFactory{
 
 	@Override
 	public DataSourceJdbcFactory loadFactory() {
-		List<ClassDataInfo> owners= ClassDataInfoFactoryImpl.getFactory().getDataList(DataSource.class.getName());
-		for(ClassDataInfo owner:owners) {
+		List<BeanInfo> owners= BeanInfoFactoryImpl.getFactory().getBeanInfoList(DataSource.class.getName());
+		for(BeanInfo owner:owners) {
 			DataSource dataSource=ModelFactory.getFactory().getModel(owner);
 			if(dataSource!=null) {
 				getCache().put(owner.getId(), dataSource);
