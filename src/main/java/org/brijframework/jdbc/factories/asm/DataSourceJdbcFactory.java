@@ -43,10 +43,11 @@ public class DataSourceJdbcFactory implements JdbcFactory{
 
 	@Override
 	public DataSourceJdbcFactory loadFactory() {
-		List<BeanInfo> owners= BeanInfoFactoryImpl.getFactory().getBeanInfoList(DataSource.class.getName());
+		List<BeanInfo> owners= BeanInfoFactoryImpl.getFactory().getBeanInfoList(DataSource.class);
 		for(BeanInfo owner:owners) {
 			DataSource dataSource=ModelFactory.getFactory().getModel(owner);
 			if(dataSource!=null) {
+				System.err.println("DataSource   : "+owner.getId());
 				getCache().put(owner.getId(), dataSource);
 			}	
 		}
