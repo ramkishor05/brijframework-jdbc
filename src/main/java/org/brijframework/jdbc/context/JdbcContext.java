@@ -1,7 +1,5 @@
 package org.brijframework.jdbc.context;
 
-import java.util.Properties;
-
 import org.brijframework.asm.context.AbstractModuleContext;
 import org.brijframework.jdbc.container.JdbcContainer;
 import org.brijframework.model.context.ModelContext;
@@ -11,16 +9,6 @@ import org.brijframework.util.reflect.ReflectionUtils;
 
 @DepandOn(depand=ModelContext.class)
 public class JdbcContext extends AbstractModuleContext{
-
-	private Properties properties=new Properties();
-	
-	public void setProperty(String key, String value) {
-		properties.setProperty(key, value);
-	}
-	
-	public String getProperty(String key) {
-		return properties.getProperty(key);
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override

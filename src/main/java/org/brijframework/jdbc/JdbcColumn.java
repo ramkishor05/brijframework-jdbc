@@ -241,7 +241,7 @@ public class JdbcColumn extends AbstractJdbc{
 	public boolean updateColumn(String colname) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" CHANGE "+this.getCOLUMN_NAME()+" "+colname+" "+this.getTYPE_NAME();
-		boolean reslt=this.getJdbcTable().execute(statement, query);
+		boolean reslt=this.getJdbcTable().executeUpdate(statement, query);
 		if(reslt) {
 			this.setCOLUMN_NAME(colname);
 		}
@@ -251,7 +251,7 @@ public class JdbcColumn extends AbstractJdbc{
 	public boolean updateColumn(String colname,String type) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" CHANGE "+this.getCOLUMN_NAME()+" "+colname+" "+type;
-		boolean reslt=this.getJdbcTable().execute(statement, query);
+		boolean reslt=this.getJdbcTable().executeUpdate(statement, query);
 		if(reslt) {
 			this.setCOLUMN_NAME(colname);
 			this.setTYPE_NAME(type);
@@ -263,7 +263,7 @@ public class JdbcColumn extends AbstractJdbc{
 	public boolean updateColumn(String colname,String type, int size) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" CHANGE "+this.getCOLUMN_NAME()+" "+colname+" "+type+"("+size+")";
-		boolean reslt=this.getJdbcTable().execute(statement, query);
+		boolean reslt=this.getJdbcTable().executeUpdate(statement, query);
 		if(reslt) {
 			this.setCOLUMN_NAME(colname);
 			this.setTYPE_NAME(type);
@@ -275,13 +275,13 @@ public class JdbcColumn extends AbstractJdbc{
 	public boolean setDefaultColumn(Object value) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" ALTER "+this.getCOLUMN_NAME()+" SET DEFAULT "+value;
-		return this.getJdbcTable().execute(statement, query);
+		return this.getJdbcTable().executeUpdate(statement, query);
 	}
 	
 	public boolean modifyColumn(String type, int size) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();		
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" MODIFY "+this.getCOLUMN_NAME()+" "+type+"("+size+")";
-		boolean reslt=this.getJdbcTable().execute(statement, query);
+		boolean reslt=this.getJdbcTable().executeUpdate(statement, query);
 		if(reslt) {
 			this.setTYPE_NAME(type);
 			this.setCOLUMN_SIZE(size);

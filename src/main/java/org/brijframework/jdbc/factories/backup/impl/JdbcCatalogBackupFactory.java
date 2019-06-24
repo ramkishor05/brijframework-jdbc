@@ -1,4 +1,4 @@
-package org.brijframework.jdbc.factories.data;
+package org.brijframework.jdbc.factories.backup.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,16 +10,18 @@ import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.factories.Factory;
 import org.brijframework.jdbc.JbdcCatalog;
 import org.brijframework.jdbc.JdbcTable;
+import org.brijframework.jdbc.constants.JdbcConstants;
+import org.brijframework.jdbc.factories.data.JdbcDataFactory;
 import org.brijframework.jdbc.factories.meta.impl.JdbcCatalogFactoryImpl;
 import org.brijframework.support.model.Assignable;
+import org.brijframework.util.location.PathUtil;
+import org.brijframework.util.location.StreamUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class JdbcCatalogBackupFactory extends AbstractFactory<File,JbdcCatalog> implements JdbcDataFactory {
 	
-	private String pathname="E:\\backup";
-
 	protected JdbcCatalogBackupFactory() {
 	}
 
@@ -32,7 +34,6 @@ public class JdbcCatalogBackupFactory extends AbstractFactory<File,JbdcCatalog> 
 		}
 		return factory;
 	}
-	
 
 	@Override
 	public Factory loadFactory() {
@@ -44,7 +45,13 @@ public class JdbcCatalogBackupFactory extends AbstractFactory<File,JbdcCatalog> 
 
 
 	private void register(String catalogKey, JbdcCatalog catalog) {
-		File catalogFile=new File(pathname,catalog.getTABLE_CAT());
+		String data_backup_json_config=(String) getContainer().getContext().getProperties().get(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_BACKUP_JSON_LOCATION);
+		if (data_backup_json_config==null) {
+			return ;
+		}
+		
+		File currentPath=new File(PathUtil.getResourcesContextPath(),data_backup_json_config);
+		File catalogFile=new File(currentPath,catalog.getTABLE_CAT());
 		if(!catalogFile.exists()) {
 			catalogFile.mkdirs();
 		}
@@ -61,22 +68,15 @@ public class JdbcCatalogBackupFactory extends AbstractFactory<File,JbdcCatalog> 
 			}
 		}
 		try {
-			final StringWriter out =new StringWriter();
-		    final ObjectMapper mapper = new ObjectMapper();
-		    ObjectWriter writer= mapper.writerWithDefaultPrettyPrinter();
-		    String json=writer.writeValueAsString(table.getAllRows());
-		    final byte[] bytes = json.getBytes();
-			Files.write(tableFile.toPath(), bytes, StandardOpenOption.WRITE);
-			out.close();
+			StreamUtil.writeJsonToFile(tableFile.toPath(), table.getAllRows());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
 	protected void preregister(File catalogFile, JbdcCatalog catalog) {
-		
+		System.err.println("Jdbc Backup   : "+catalogFile);
 	}
 
 	@Override

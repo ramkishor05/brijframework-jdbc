@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.brijframework.jdbc.factories.meta.JdbcTableFactory;
 import org.brijframework.jdbc.util.JdbcUtil;
@@ -119,10 +120,10 @@ public class JdbcTable extends AbstractJdbc{
 		return getColumns().get(key);
 	}
 	
-	public boolean  execute(Statement st,String query) {
+	public boolean  executeUpdate(Statement st,String query) {
 		int n = 0;
 		try {
-			System.err.println("Query   :" + query);
+			System.err.println("Query        :" + query);
 			n = st.executeUpdate(query);
 			System.err.println("Query OK, " + n + " rows affected");
 		} catch (SQLException e) {
@@ -130,11 +131,14 @@ public class JdbcTable extends AbstractJdbc{
 		}
 		return n>0;
 	}
+	public boolean  executeUpdate(String query) throws Exception {
+		return executeUpdate(getStatement(), query);
+	}
 	
 	public ResultSet executeQuery(Statement st,String query) {
 		ResultSet result = null;
 		try {
-			System.err.println("Query   :" + query);
+			System.err.println("Query        :" + query);
 			result = st.executeQuery(query);
 			System.err.println("Query OK, " + result.getFetchSize() + " rows affected");
 		} catch (SQLException e) {
@@ -165,7 +169,7 @@ public class JdbcTable extends AbstractJdbc{
 	public boolean addColumn(String colname, String type, int size) throws Exception {
 		Statement statement= getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" ADD "+colname+" "+type+"("+size+")";
-		return execute(statement, query);
+		return executeUpdate(statement, query);
 	}
 	
 	public boolean setDefaultColumn(String colname, Object value) throws Exception {
@@ -184,5 +188,27 @@ public class JdbcTable extends AbstractJdbc{
 		String query = "SELECT * FROM "+this.getTABLE_NAME()+";";
 		ResultSet result=executeQuery(query);
 		return JdbcUtil.getList(result);
+	}
+	
+	public boolean addRow(Map<String, Object> map) throws Exception {
+		StringBuilder query = new StringBuilder("INSERT INTO "+this.getTABLE_NAME());
+		StringBuilder keyset =new StringBuilder();
+		StringBuilder keyval =new StringBuilder();
+		keyset.append("(");
+		keyval.append("VALUES(");
+		AtomicInteger count=new AtomicInteger(0);
+		map.forEach((key,val)->{
+			keyset.append(key);
+			keyval.append(val);
+			if(count.incrementAndGet()<map.size()) {
+				keyset.append(", ");
+				keyval.append(", ");
+			}
+		});
+		keyset.append(")");
+		keyval.append(")");
+		query.append(keyset);
+		query.append(keyval);
+		return executeUpdate(query.toString());
 	}
 }
