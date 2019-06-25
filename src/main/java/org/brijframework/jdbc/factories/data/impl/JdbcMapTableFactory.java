@@ -2,22 +2,16 @@ package org.brijframework.jdbc.factories.data.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.Map;
 
 import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.factories.Factory;
-import org.brijframework.jdbc.JbdcCatalog;
+import org.brijframework.jdbc.JdbcCatalog;
 import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcConstants;
 import org.brijframework.jdbc.factories.data.JdbcDataFactory;
 import org.brijframework.jdbc.factories.meta.impl.JdbcCatalogFactoryImpl;
 import org.brijframework.support.model.Assignable;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class JdbcMapTableFactory extends AbstractFactory<String,Map<String,String>> implements JdbcDataFactory {
 	
@@ -43,12 +37,12 @@ public class JdbcMapTableFactory extends AbstractFactory<String,Map<String,Strin
 		return null;
 	}
 
-	private void register(String catalogKey, JbdcCatalog catalog) {
+	private void register(String catalogKey, JdbcCatalog catalog) {
 		String mapper_json_config=(String) getContainer().getContext().getProperties().get(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_MAPPER_JSON_LOCATION);
 		if (mapper_json_config==null) {
 			return ;
 		}
-		File catalogFile=new File(mapper_json_config,catalog.getTABLE_CAT());
+		File catalogFile=new File(mapper_json_config,catalog.getTableCat());
 		if(!catalogFile.exists()) {
 			return;
 		}
@@ -58,7 +52,7 @@ public class JdbcMapTableFactory extends AbstractFactory<String,Map<String,Strin
 	}
 	
 	private void register(File catalogFile, String tableKey, JdbcTable table) {
-		File tableFile=new File(catalogFile,table.getTABLE_NAME()+".json");
+		File tableFile=new File(catalogFile,table.getTableName()+".json");
 		if(!tableFile.exists()) {
 			try {
 				tableFile.createNewFile();

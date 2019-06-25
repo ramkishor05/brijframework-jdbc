@@ -20,25 +20,140 @@ public class JdbcTable extends AbstractJdbc{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String TABLE_CAT;
-	private String TABLE_NAME;
-	private String SELF_REFERENCING_COL_NAME;
-	private String TABLE_SCHEM;
-	private String TYPE_SCHEM;
-	private String TYPE_CAT;
-	private String TABLE_TYPE;
-	private String REMARKS;
-	private String REF_GENERATION;
-	private String TYPE_NAME;
+	private String tableCat;
+	private String tableName;
+	private String selfReferencingColName;
+	private String tableSchem;
+	private String typeSchem;
+	private String typeCat;
+	private String tableType;
+	private String remarks;
+	private String refGeneration;
+	private String typeName;
+
+	private Map<String, JdbcColumn> columns;
+	
+	private Map<String, JdbcRefTab> refTabs;
 	
 	@JsonIgnore
-	private JbdcCatalog catalog;
-	
-	private Map<String, JdbcColumn> columns;
+	private JdbcCatalog catalog;
 	
 	@JsonIgnore
 	private JdbcTableFactory factory;
+
+	public String getTableCat() {
+		return tableCat;
+	}
+
+	public void setTableCat(String tableCat) {
+		this.tableCat = tableCat;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+
+	public String getSelfReferencingColName() {
+		return selfReferencingColName;
+	}
+
+	public void setSelfReferencingColName(String selfReferencingColName) {
+		this.selfReferencingColName = selfReferencingColName;
+	}
+
+	public String getTableSchem() {
+		return tableSchem;
+	}
+
+	public void setTableSchem(String tableSchem) {
+		this.tableSchem = tableSchem;
+	}
+
+	public String getTypeSchem() {
+		return typeSchem;
+	}
+
+	public void setTypeSchem(String typeSchem) {
+		this.typeSchem = typeSchem;
+	}
+
+	public String getTypeCat() {
+		return typeCat;
+	}
+
+	public void setTypeCat(String typeCat) {
+		this.typeCat = typeCat;
+	}
+
+	public String getTableType() {
+		return tableType;
+	}
+
+	public void setTableType(String tableType) {
+		this.tableType = tableType;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public String getRefGeneration() {
+		return refGeneration;
+	}
+
+	public void setRefGeneration(String refGeneration) {
+		this.refGeneration = refGeneration;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
 	
+	public void setColumns(Map<String, JdbcColumn> columns) {
+		this.columns = columns;
+	}
+
+	public Map<String, JdbcColumn> getColumns() {
+		if (columns==null) {
+			columns=new HashMap<String, JdbcColumn>();
+		}
+		return columns;
+	}
+	
+	public void setRefTabs(Map<String, JdbcRefTab> refTabs) {
+		this.refTabs = refTabs;
+	}
+	
+	public Map<String, JdbcRefTab> getRefTabs() {
+		if(refTabs==null) {
+			refTabs=new HashMap<>();
+		}
+		return refTabs;
+	}	
+	
+	@JsonIgnore
+	public void setCatalog(JdbcCatalog catalog) {
+		this.catalog = catalog;
+	}
+	
+	@JsonIgnore
+	public JdbcCatalog getCatalog() {
+		return catalog;
+	}
+	
+	@JsonIgnore
 	@Override
 	public JdbcTableFactory getFactory() {
 		return factory;
@@ -47,84 +162,6 @@ public class JdbcTable extends AbstractJdbc{
 	@JsonIgnore
 	public void setFactory(JdbcTableFactory factory) {
 		this.factory = factory;
-	}
-	
-	public String getTABLE_CAT() {
-		return TABLE_CAT;
-	}
-	public void setTABLE_CAT(String tABLE_CAT) {
-		TABLE_CAT = tABLE_CAT;
-	}
-	public String getTABLE_NAME() {
-		return TABLE_NAME;
-	}
-	public void setTABLE_NAME(String tABLE_NAME) {
-		TABLE_NAME = tABLE_NAME;
-	}
-	public String getSELF_REFERENCING_COL_NAME() {
-		return SELF_REFERENCING_COL_NAME;
-	}
-	public void setSELF_REFERENCING_COL_NAME(String sELF_REFERENCING_COL_NAME) {
-		SELF_REFERENCING_COL_NAME = sELF_REFERENCING_COL_NAME;
-	}
-	public String getTABLE_SCHEM() {
-		return TABLE_SCHEM;
-	}
-	public void setTABLE_SCHEM(String tABLE_SCHEM) {
-		TABLE_SCHEM = tABLE_SCHEM;
-	}
-	public String getTYPE_SCHEM() {
-		return TYPE_SCHEM;
-	}
-	public void setTYPE_SCHEM(String tYPE_SCHEM) {
-		TYPE_SCHEM = tYPE_SCHEM;
-	}
-	public String getTYPE_CAT() {
-		return TYPE_CAT;
-	}
-	public void setTYPE_CAT(String tYPE_CAT) {
-		TYPE_CAT = tYPE_CAT;
-	}
-	public String getTABLE_TYPE() {
-		return TABLE_TYPE;
-	}
-	public void setTABLE_TYPE(String tABLE_TYPE) {
-		TABLE_TYPE = tABLE_TYPE;
-	}
-	public String getREMARKS() {
-		return REMARKS;
-	}
-	public void setREMARKS(String rEMARKS) {
-		REMARKS = rEMARKS;
-	}
-	public String getREF_GENERATION() {
-		return REF_GENERATION;
-	}
-	public void setREF_GENERATION(String rEF_GENERATION) {
-		REF_GENERATION = rEF_GENERATION;
-	}
-	public String getTYPE_NAME() {
-		return TYPE_NAME;
-	}
-	public void setTYPE_NAME(String tYPE_NAME) {
-		TYPE_NAME = tYPE_NAME;
-	}
-	
-	@JsonIgnore
-	public void setCatalog(JbdcCatalog catalog) {
-		this.catalog = catalog;
-	}
-	
-	@JsonIgnore
-	public JbdcCatalog getCatalog() {
-		return catalog;
-	}
-	
-	public Map<String, JdbcColumn> getColumns() {
-		if (columns==null) {
-			columns=new HashMap<String, JdbcColumn>();
-		}
-		return columns;
 	}
 	
 	@JsonIgnore
@@ -174,8 +211,7 @@ public class JdbcTable extends AbstractJdbc{
 		JdbcTable table = this;
 		JdbcSource source = table.getCatalog().getSource();
 		Assertion.notNull(source, "Source not found ");
-		Statement st = source.getConnection().createStatement();
-		return st;
+		return source.getConnection().createStatement();
 	}
 	
 	@JsonIgnore
@@ -188,7 +224,7 @@ public class JdbcTable extends AbstractJdbc{
 	@JsonIgnore
 	public boolean addColumn(String colname, String type, int size) throws Exception {
 		Statement statement= getStatement();
-		String query = "ALTER TABLE "+this.getTABLE_NAME()+" ADD "+colname+" "+type+"("+size+")";
+		String query = "ALTER TABLE "+this.getTableName()+" ADD "+colname+" "+type+"("+size+")";
 		return executeUpdate(statement, query);
 	}
 	
@@ -208,14 +244,14 @@ public class JdbcTable extends AbstractJdbc{
 	
 	@JsonIgnore
 	public List<Map<String, Object>> getAllRows() throws Exception {
-		String query = "SELECT * FROM "+this.getTABLE_NAME()+";";
+		String query = "SELECT * FROM "+this.getTableName()+";";
 		ResultSet result=executeQuery(query);
-		return JdbcUtil.getList(result);
+		return JdbcUtil.getResultList(result);
 	}
 	
 	@JsonIgnore
 	public boolean addRow(Map<String, Object> map) throws Exception {
-		StringBuilder query = new StringBuilder("INSERT INTO "+this.getTABLE_NAME());
+		StringBuilder query = new StringBuilder("INSERT INTO "+this.getTableName());
 		StringBuilder keyset =new StringBuilder();
 		StringBuilder keyval =new StringBuilder();
 		keyset.append("(");

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.brijframework.asm.factories.AbstractFactory;
-import org.brijframework.jdbc.JbdcCatalog;
+import org.brijframework.jdbc.JdbcCatalog;
 import org.brijframework.jdbc.JdbcSource;
 import org.brijframework.jdbc.factories.meta.JdbcCatalogFactory;
 import org.brijframework.support.model.Assignable;
@@ -13,7 +13,7 @@ import org.brijframework.support.model.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;
 
 @DepandOn(depand=JdbcSourceFactoryImpl.class)
-public class JdbcCatalogFactoryImpl extends AbstractFactory<String,JbdcCatalog> implements JdbcCatalogFactory {
+public class JdbcCatalogFactoryImpl extends AbstractFactory<String,JdbcCatalog> implements JdbcCatalogFactory {
 
 
 	protected JdbcCatalogFactoryImpl() {
@@ -41,8 +41,8 @@ public class JdbcCatalogFactoryImpl extends AbstractFactory<String,JbdcCatalog> 
 		try {
 			Connection connection=datasource.getConnection();
 			HashMap<String, Object> map=new HashMap<String, Object>();
-			map.put("TABLE_CAT" , connection.getCatalog());
-			map.put("SOURCE_CAT" , datasource.getId());
+			map.put("tableCat" , connection.getCatalog());
+			map.put("sourceCat" , datasource.getId());
 			map.put("source", datasource);
 			register(key, map);
 		} catch (Exception e) {
@@ -51,26 +51,26 @@ public class JdbcCatalogFactoryImpl extends AbstractFactory<String,JbdcCatalog> 
 	}
 
 	private void register(String key, Map<String, Object> map) {
-		JbdcCatalog catalog=InstanceUtil.getInstance(JbdcCatalog.class, map);
-		catalog.setId(key+"."+catalog.getTABLE_CAT());
-		register(key+"."+catalog.getTABLE_CAT(), catalog);
+		JdbcCatalog catalog=InstanceUtil.getInstance(JdbcCatalog.class, map);
+		catalog.setId(key+"."+catalog.getTableCat());
+		register(key+"."+catalog.getTableCat(), catalog);
 	}
 
 	@Override
-	protected void preregister(String key, JbdcCatalog catalog) {
+	protected void preregister(String key, JdbcCatalog catalog) {
 		System.err.println("Jdbc Catalog : "+key);
 	}
 
 	@Override
-	protected void postregister(String key, JbdcCatalog catalog) {
-		JdbcSource source=JdbcSourceFactoryImpl.getFactory().getJdbcSource(catalog.getSOURCE_CAT());
+	protected void postregister(String key, JdbcCatalog catalog) {
+		JdbcSource source=JdbcSourceFactoryImpl.getFactory().getJdbcSource(catalog.getSourceCat());
 		if(source!=null) {
 			source.setCatalog(catalog);
 			catalog.setSource(source);
 		}
 	}
 
-	public JbdcCatalog getJbdcCatalog(String key) {
+	public JdbcCatalog getJbdcCatalog(String key) {
 		return getCache().get(key);
 	}
 }

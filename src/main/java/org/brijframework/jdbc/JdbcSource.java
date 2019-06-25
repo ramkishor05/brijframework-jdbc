@@ -14,7 +14,7 @@ public class JdbcSource extends AbstractJdbc{
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private DataSource dataSource;
-	private JbdcCatalog catalog;
+	private JdbcCatalog catalog;
 	private Connection connection;
 	private JdbcSourceFactory factory;
 
@@ -34,11 +34,11 @@ public class JdbcSource extends AbstractJdbc{
 		this.dataSource = dataSource;
 	}
 
-	public JbdcCatalog getCatalog() {
+	public JdbcCatalog getCatalog() {
 		return catalog;
 	}
 
-	public void setCatalog(JbdcCatalog catalog) {
+	public void setCatalog(JdbcCatalog catalog) {
 		this.catalog = catalog;
 	}
 	

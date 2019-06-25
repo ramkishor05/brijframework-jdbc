@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.util.Map;
 
 import org.brijframework.asm.factories.AbstractFactory;
-import org.brijframework.jdbc.JbdcCatalog;
+import org.brijframework.jdbc.JdbcCatalog;
+import org.brijframework.jdbc.JdbcRefTab;
 import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcMeta;
 import org.brijframework.jdbc.factories.meta.JdbcTableFactory;
@@ -37,7 +38,7 @@ public class JdbcTableFactoryImpl extends AbstractFactory<String,JdbcTable> impl
 		return this;
 	}
 
-	public void register(String catalogKey, JbdcCatalog catalog) {
+	public void register(String catalogKey, JdbcCatalog catalog) {
 		try {
 			Connection connection=catalog.getSource().getConnection();
 			for(Map<String, Object> map:JdbcUtil.getTablesList(connection, JdbcMeta.TABLE)) {
@@ -48,7 +49,7 @@ public class JdbcTableFactoryImpl extends AbstractFactory<String,JdbcTable> impl
 		}
 	}
 	
-	public void register(JbdcCatalog catalog) {
+	public void register(JdbcCatalog catalog) {
 		try {
 			Connection connection=catalog.getSource().getConnection();
 			for(Map<String, Object> tableMap:JdbcUtil.getTablesList(connection, JdbcMeta.TABLE)) {
@@ -60,15 +61,24 @@ public class JdbcTableFactoryImpl extends AbstractFactory<String,JdbcTable> impl
 	}
 	
 	public void register(String catalogKey, Map<String, Object> tableMap) {
-		JbdcCatalog catalog=JdbcCatalogFactoryImpl.getFactory().getJbdcCatalog(catalogKey);
+		JdbcCatalog catalog=JdbcCatalogFactoryImpl.getFactory().getJbdcCatalog(catalogKey);
 		register(catalog, tableMap);
 	}
 	
-	public void register(JbdcCatalog catalog, Map<String, Object> tableMap) {
+	public void register(JdbcCatalog catalog, Map<String, Object> tableMap) {
 		JdbcTable jdbcTable=InstanceUtil.getInstance(JdbcTable.class, tableMap);
 		jdbcTable.setCatalog(catalog);
-		jdbcTable.setId(catalog.getTABLE_CAT()+"."+jdbcTable.getTABLE_NAME());
-		register(catalog.getTABLE_CAT()+"."+jdbcTable.getTABLE_NAME(), jdbcTable);
+		jdbcTable.setId(catalog.getTableCat()+"."+jdbcTable.getTableName());
+		try {
+			for(Map<String, Object> tabRefMap:JdbcUtil.foreignKeys(catalog.getSource().getConnection(), jdbcTable.getTableName())) {
+				JdbcRefTab jdbcRabRef=InstanceUtil.getInstance(JdbcRefTab.class, tabRefMap);
+				jdbcRabRef.setId(jdbcRabRef.getPkcolumnName());
+				jdbcTable.getRefTabs().put(jdbcRabRef.getPkcolumnName(), jdbcRabRef);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		register(catalog.getTableCat()+"."+jdbcTable.getTableName(), jdbcTable);
 	}
 
 	@Override
@@ -78,7 +88,7 @@ public class JdbcTableFactoryImpl extends AbstractFactory<String,JdbcTable> impl
 
 	@Override
 	protected void postregister(String key, JdbcTable jdbcTable) {
-		jdbcTable.getCatalog().getTables().put(jdbcTable.getTABLE_NAME(), jdbcTable);
+		jdbcTable.getCatalog().getTables().put(jdbcTable.getTableName(), jdbcTable);
 	}
 
 	@Override
@@ -92,7 +102,7 @@ public class JdbcTableFactoryImpl extends AbstractFactory<String,JdbcTable> impl
 			if(jdbcTable.getCatalog()==null) {
 				continue;
 			}
-			if(catalog.equals(jdbcTable.getTABLE_CAT()) && table.equals(jdbcTable.getTABLE_NAME())) {
+			if(catalog.equals(jdbcTable.getTableCat()) && table.equals(jdbcTable.getTableName())) {
 				return jdbcTable;
 			}
 		}
@@ -108,7 +118,7 @@ public class JdbcTableFactoryImpl extends AbstractFactory<String,JdbcTable> impl
 			if(jdbcTable.getCatalog().getSource()==null) {
 				continue;
 			}
-			if(catalog.equals(jdbcTable.getTABLE_CAT()) && table.equals(jdbcTable.getTABLE_NAME())) {
+			if(catalog.equals(jdbcTable.getTableCat()) && table.equals(jdbcTable.getTableName())) {
 				return jdbcTable;
 			}
 		}
