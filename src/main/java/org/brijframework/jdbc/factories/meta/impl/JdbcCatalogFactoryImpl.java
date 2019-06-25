@@ -52,6 +52,7 @@ public class JdbcCatalogFactoryImpl extends AbstractFactory<String,JbdcCatalog> 
 
 	private void register(String key, Map<String, Object> map) {
 		JbdcCatalog catalog=InstanceUtil.getInstance(JbdcCatalog.class, map);
+		catalog.setId(key+"."+catalog.getTABLE_CAT());
 		register(key+"."+catalog.getTABLE_CAT(), catalog);
 	}
 

@@ -4,8 +4,14 @@ import java.sql.Statement;
 
 import org.brijframework.jdbc.factories.meta.JdbcColumnFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class JdbcColumn extends AbstractJdbc{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String SCOPE_TABLE;
 	private String TABLE_CAT;
 	private String BUFFER_LENGTH;
@@ -31,7 +37,10 @@ public class JdbcColumn extends AbstractJdbc{
 	private String TYPE_NAME;
 	private int COLUMN_SIZE;
 
+	@JsonIgnore
 	private JdbcTable jdbcTable;
+	
+	@JsonIgnore
 	private JdbcColumnFactory factory;
 
 	public String getTABLE_CAT() {
@@ -226,18 +235,22 @@ public class JdbcColumn extends AbstractJdbc{
 		COLUMN_SIZE = cOLUMN_SIZE;
 	}
 
+	@JsonIgnore
 	public void setJdbcTable(JdbcTable jdbcTable) {
 		this.jdbcTable = jdbcTable;
 	}
 
+	@JsonIgnore
 	public void setTable(JdbcTable jdbcTable) {
 		this.jdbcTable = jdbcTable;
 	}
 
+	@JsonIgnore
 	public JdbcTable getJdbcTable() {
 		return jdbcTable;
 	}
 	
+	@JsonIgnore
 	public boolean updateColumn(String colname) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" CHANGE "+this.getCOLUMN_NAME()+" "+colname+" "+this.getTYPE_NAME();
@@ -248,6 +261,7 @@ public class JdbcColumn extends AbstractJdbc{
 		return reslt;
 	}
 	
+	@JsonIgnore
 	public boolean updateColumn(String colname,String type) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" CHANGE "+this.getCOLUMN_NAME()+" "+colname+" "+type;
@@ -259,7 +273,7 @@ public class JdbcColumn extends AbstractJdbc{
 		return reslt;
 	}
 	
-	
+	@JsonIgnore
 	public boolean updateColumn(String colname,String type, int size) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" CHANGE "+this.getCOLUMN_NAME()+" "+colname+" "+type+"("+size+")";
@@ -272,12 +286,14 @@ public class JdbcColumn extends AbstractJdbc{
 		return reslt;
 	}
 	
+	@JsonIgnore
 	public boolean setDefaultColumn(Object value) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" ALTER "+this.getCOLUMN_NAME()+" SET DEFAULT "+value;
 		return this.getJdbcTable().executeUpdate(statement, query);
 	}
-	
+
+	@JsonIgnore
 	public boolean modifyColumn(String type, int size) throws Exception {
 		Statement statement= this.getJdbcTable().getStatement();		
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" MODIFY "+this.getCOLUMN_NAME()+" "+type+"("+size+")";
@@ -289,11 +305,13 @@ public class JdbcColumn extends AbstractJdbc{
 		return reslt;
 	}
 
+	@JsonIgnore
 	@Override
 	public JdbcColumnFactory getFactory() {
 		return factory;
 	}
 	
+	@JsonIgnore
 	public void setFactory(JdbcColumnFactory factory) {
 		this.factory = factory;
 	}

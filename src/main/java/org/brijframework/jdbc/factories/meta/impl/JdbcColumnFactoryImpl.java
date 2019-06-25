@@ -50,6 +50,7 @@ public class JdbcColumnFactoryImpl extends AbstractFactory<String,JdbcColumn> im
 	public void register(String tableKey,JdbcTable jdbcTable, Map<String, Object> map) {
 		JdbcColumn jdbcTableColumn=InstanceUtil.getInstance(JdbcColumn.class, map);
 		jdbcTableColumn.setTable(jdbcTable);
+		jdbcTableColumn.setId(tableKey+"."+jdbcTableColumn.getCOLUMN_NAME());
 		register(tableKey+"."+jdbcTableColumn.getCOLUMN_NAME(), jdbcTableColumn);
 	}
 

@@ -7,6 +7,10 @@ import org.brijframework.jdbc.factories.meta.JdbcCatalogFactory;
 
 public class JbdcCatalog extends AbstractJdbc{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String SOURCE_CAT;
 	private String TABLE_CAT;
 	private JdbcSource source;

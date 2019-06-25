@@ -11,14 +11,17 @@ import org.brijframework.factories.Factory;
 import org.brijframework.jdbc.JbdcCatalog;
 import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcConstants;
+import org.brijframework.jdbc.factories.backup.impl.JdbcCatalogBackupFactory;
 import org.brijframework.jdbc.factories.data.JdbcDataFactory;
 import org.brijframework.jdbc.factories.meta.impl.JdbcCatalogFactoryImpl;
 import org.brijframework.support.model.Assignable;
+import org.brijframework.support.model.DepandOn;
 import org.brijframework.util.location.PathUtil;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@DepandOn(depand=JdbcCatalogBackupFactory.class)
 public class JdbcCatalogRestoreFactory extends AbstractFactory<File,JbdcCatalog> implements JdbcDataFactory {
 	
 	protected JdbcCatalogRestoreFactory() {
@@ -36,19 +39,31 @@ public class JdbcCatalogRestoreFactory extends AbstractFactory<File,JbdcCatalog>
 
 	@Override
 	public Factory loadFactory() {
-		JdbcCatalogFactoryImpl.getFactory().getCache().forEach((catalogKey,catalog)->{
+		String catalogenable=getProperty(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_RESTORE_JSON_ENABLE);
+		System.out.println("catalogenable="+catalogenable);
+		if(catalogenable!=null && (catalogenable.equalsIgnoreCase("Y") || Boolean.valueOf(catalogenable) ==true || catalogenable.equalsIgnoreCase("true")|| catalogenable.equalsIgnoreCase("1"))) {
+			String catalogKey=getProperty(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_RESTORE_JSON_CATALOG);
+			System.out.println("catalogKey="+catalogKey);
+			if (catalogKey==null) {
+				return this;
+			}
+			JbdcCatalog catalog=JdbcCatalogFactoryImpl.getFactory().getJbdcCatalog(catalogKey);
+			System.out.println("catalog="+catalog);
+			if(catalog==null) {
+				return this;
+			}
 			register(catalogKey, catalog);
-		});
-		return null;
+		}
+		
+		return this;
 	}
 
 
 	private void register(String catalogKey, JbdcCatalog catalog) {
-		String data_backup_json_config=(String) getContainer().getContext().getProperties().get(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_BACKUP_JSON_LOCATION);
+		String data_backup_json_config=getProperty(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_RESTORE_JSON_LOCATION);
 		if (data_backup_json_config==null) {
 			return ;
 		}
-		
 		File currentPath=new File(PathUtil.getResourcesContextPath(),data_backup_json_config);
 		File catalogFile=new File(currentPath,catalog.getTABLE_CAT());
 		if(!catalogFile.exists()) {
@@ -84,7 +99,9 @@ public class JdbcCatalogRestoreFactory extends AbstractFactory<File,JbdcCatalog>
 
 	@Override
 	protected void postregister(File catalogFile, JbdcCatalog catalog) {
+		System.out.println(catalog.getTables());
 		catalog.getTables().forEach((tableKey,table)->{
+			System.out.println("tableKey");
 			writeFile(catalogFile, tableKey, table);
 		});
 	}

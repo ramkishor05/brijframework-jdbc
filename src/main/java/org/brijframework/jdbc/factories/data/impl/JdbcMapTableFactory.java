@@ -44,7 +44,7 @@ public class JdbcMapTableFactory extends AbstractFactory<String,Map<String,Strin
 	}
 
 	private void register(String catalogKey, JbdcCatalog catalog) {
-		String mapper_json_config=(String) getContainer().getContext().getProperties().get(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_MAPPER_JSON_LOCATION);
+		String mapper_json_config=(String) getContainer().getContext().getProperties().get(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_MAPPER_JSON_LOCATION);
 		if (mapper_json_config==null) {
 			return ;
 		}
@@ -66,17 +66,15 @@ public class JdbcMapTableFactory extends AbstractFactory<String,Map<String,Strin
 				e.printStackTrace();
 			}
 		}
-		try {
-			final StringWriter out =new StringWriter();
-		    final ObjectMapper mapper = new ObjectMapper();
-		    ObjectWriter writer= mapper.writerWithDefaultPrettyPrinter();
-		    String json=writer.writeValueAsString(table.getAllRows());
-		    final byte[] bytes = json.getBytes();
-			Files.write(tableFile.toPath(), bytes, StandardOpenOption.WRITE);
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		/*
+		 * try { final StringWriter out =new StringWriter(); final ObjectMapper mapper =
+		 * new ObjectMapper(); ObjectWriter writer=
+		 * mapper.writerWithDefaultPrettyPrinter(); String
+		 * json=writer.writeValueAsString(table.getAllRows()); final byte[] bytes =
+		 * json.getBytes(); Files.write(tableFile.toPath(), bytes,
+		 * StandardOpenOption.WRITE); out.close(); } catch (Exception e) {
+		 * e.printStackTrace(); }
+		 */
 	}
 
 

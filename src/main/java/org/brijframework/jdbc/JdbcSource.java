@@ -8,6 +8,10 @@ import org.brijframework.jdbc.factories.meta.JdbcSourceFactory;
 
 public class JdbcSource extends AbstractJdbc{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private DataSource dataSource;
 	private JbdcCatalog catalog;

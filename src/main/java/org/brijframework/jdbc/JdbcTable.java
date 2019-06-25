@@ -12,8 +12,14 @@ import org.brijframework.jdbc.factories.meta.JdbcTableFactory;
 import org.brijframework.jdbc.util.JdbcUtil;
 import org.brijframework.util.asserts.Assertion;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class JdbcTable extends AbstractJdbc{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String TABLE_CAT;
 	private String TABLE_NAME;
 	private String SELF_REFERENCING_COL_NAME;
@@ -25,17 +31,20 @@ public class JdbcTable extends AbstractJdbc{
 	private String REF_GENERATION;
 	private String TYPE_NAME;
 	
+	@JsonIgnore
 	private JbdcCatalog catalog;
 	
 	private Map<String, JdbcColumn> columns;
+	
+	@JsonIgnore
 	private JdbcTableFactory factory;
 	
-
 	@Override
 	public JdbcTableFactory getFactory() {
 		return factory;
 	}
 	
+	@JsonIgnore
 	public void setFactory(JdbcTableFactory factory) {
 		this.factory = factory;
 	}
@@ -101,10 +110,12 @@ public class JdbcTable extends AbstractJdbc{
 		TYPE_NAME = tYPE_NAME;
 	}
 	
+	@JsonIgnore
 	public void setCatalog(JbdcCatalog catalog) {
 		this.catalog = catalog;
 	}
 	
+	@JsonIgnore
 	public JbdcCatalog getCatalog() {
 		return catalog;
 	}
@@ -116,10 +127,12 @@ public class JdbcTable extends AbstractJdbc{
 		return columns;
 	}
 	
+	@JsonIgnore
 	public JdbcColumn getColumn(String key) {
 		return getColumns().get(key);
 	}
 	
+	@JsonIgnore
 	public boolean  executeUpdate(Statement st,String query) {
 		int n = 0;
 		try {
@@ -131,10 +144,13 @@ public class JdbcTable extends AbstractJdbc{
 		}
 		return n>0;
 	}
+	
+	@JsonIgnore
 	public boolean  executeUpdate(String query) throws Exception {
 		return executeUpdate(getStatement(), query);
 	}
 	
+	@JsonIgnore
 	public ResultSet executeQuery(Statement st,String query) {
 		ResultSet result = null;
 		try {
@@ -147,11 +163,13 @@ public class JdbcTable extends AbstractJdbc{
 		return result;
 	}
 	
+	@JsonIgnore
 	public ResultSet executeQuery(String query) throws Exception {
 		Statement statement= getStatement();
 		return executeQuery(statement, query);
 	}
 	
+	@JsonIgnore
 	public Statement getStatement() throws Exception {
 		JdbcTable table = this;
 		JdbcSource source = table.getCatalog().getSource();
@@ -160,46 +178,55 @@ public class JdbcTable extends AbstractJdbc{
 		return st;
 	}
 	
+	@JsonIgnore
 	public boolean updateColumn(String oldName,String newName, String type, int size) throws Exception {
 		JdbcColumn column = this.getColumn(oldName);
 		Assertion.notNull(column, "Column not found for given :" + oldName);
 		return column.updateColumn(newName,type,size);
 	}
 	
+	@JsonIgnore
 	public boolean addColumn(String colname, String type, int size) throws Exception {
 		Statement statement= getStatement();
 		String query = "ALTER TABLE "+this.getTABLE_NAME()+" ADD "+colname+" "+type+"("+size+")";
 		return executeUpdate(statement, query);
 	}
 	
+	@JsonIgnore
 	public boolean setDefaultColumn(String colname, Object value) throws Exception {
 		JdbcColumn column = this.getColumn(colname);
 		Assertion.notNull(column, "column not found for given :" + colname);
 		return column.setDefaultColumn(value);
 	}
 	
+	@JsonIgnore
 	public boolean modifyColumn(String colname, String type, int size) throws Exception {
 		JdbcColumn column = this.getColumn(colname);
 		Assertion.notNull(column, "column not found for given :" + colname);
 		return column.modifyColumn(type,size);
 	}
 	
+	@JsonIgnore
 	public List<Map<String, Object>> getAllRows() throws Exception {
 		String query = "SELECT * FROM "+this.getTABLE_NAME()+";";
 		ResultSet result=executeQuery(query);
 		return JdbcUtil.getList(result);
 	}
 	
+	@JsonIgnore
 	public boolean addRow(Map<String, Object> map) throws Exception {
 		StringBuilder query = new StringBuilder("INSERT INTO "+this.getTABLE_NAME());
 		StringBuilder keyset =new StringBuilder();
 		StringBuilder keyval =new StringBuilder();
 		keyset.append("(");
-		keyval.append("VALUES(");
+		keyval.append(" VALUES(");
 		AtomicInteger count=new AtomicInteger(0);
 		map.forEach((key,val)->{
 			keyset.append(key);
-			keyval.append(val);
+			if(val instanceof String)
+			    keyval.append("'"+val+"'");
+			else
+				keyval.append(val);
 			if(count.incrementAndGet()<map.size()) {
 				keyset.append(", ");
 				keyval.append(", ");

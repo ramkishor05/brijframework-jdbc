@@ -2,9 +2,6 @@ package org.brijframework.jdbc.factories.backup.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 
 import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.factories.Factory;
@@ -16,9 +13,6 @@ import org.brijframework.jdbc.factories.meta.impl.JdbcCatalogFactoryImpl;
 import org.brijframework.support.model.Assignable;
 import org.brijframework.util.location.PathUtil;
 import org.brijframework.util.location.StreamUtil;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class JdbcCatalogBackupFactory extends AbstractFactory<File,JbdcCatalog> implements JdbcDataFactory {
 	
@@ -37,9 +31,19 @@ public class JdbcCatalogBackupFactory extends AbstractFactory<File,JbdcCatalog> 
 
 	@Override
 	public Factory loadFactory() {
-		JdbcCatalogFactoryImpl.getFactory().getCache().forEach((catalogKey,catalog)->{
+		String catalogenable=getProperty(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_BACKUP_JSON_ENABLE);
+		System.out.println("catalogenable="+catalogenable);
+		if(catalogenable!=null && (catalogenable.equalsIgnoreCase("Y") || Boolean.valueOf(catalogenable) ==true || catalogenable.equalsIgnoreCase("true")|| catalogenable.equalsIgnoreCase("1"))) {
+			String catalogKey=getProperty(JdbcConstants.APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_BACKUP_JSON_CATALOG);
+			if (catalogKey==null) {
+				return this;
+			}
+			JbdcCatalog catalog=JdbcCatalogFactoryImpl.getFactory().getJbdcCatalog(catalogKey);
+			if(catalog==null) {
+				return this;
+			}
 			register(catalogKey, catalog);
-		});
+		}
 		return null;
 	}
 

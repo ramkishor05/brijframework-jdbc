@@ -67,6 +67,7 @@ public class JdbcTableFactoryImpl extends AbstractFactory<String,JdbcTable> impl
 	public void register(JbdcCatalog catalog, Map<String, Object> tableMap) {
 		JdbcTable jdbcTable=InstanceUtil.getInstance(JdbcTable.class, tableMap);
 		jdbcTable.setCatalog(catalog);
+		jdbcTable.setId(catalog.getTABLE_CAT()+"."+jdbcTable.getTABLE_NAME());
 		register(catalog.getTABLE_CAT()+"."+jdbcTable.getTABLE_NAME(), jdbcTable);
 	}
 
