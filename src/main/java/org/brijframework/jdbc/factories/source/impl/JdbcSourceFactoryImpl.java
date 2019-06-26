@@ -15,7 +15,7 @@ import org.brijframework.model.factories.ModelFactory;
 import org.brijframework.support.model.Assignable;
 import org.brijframework.util.asserts.Assertion;
 
-public class JdbcSourceFactoryImpl extends AbstractFactory<String,JdbcSource> implements JdbcSourceFactory{
+public class JdbcSourceFactoryImpl extends AbstractFactory<String,JdbcSource> implements JdbcSourceFactory<String,JdbcSource>{
 	
 	private static JdbcSourceFactoryImpl factory;
 	
@@ -68,5 +68,6 @@ public class JdbcSourceFactoryImpl extends AbstractFactory<String,JdbcSource> im
 	protected void postregister(String key, JdbcSource value) {
 		
 	}
+
 
 }
