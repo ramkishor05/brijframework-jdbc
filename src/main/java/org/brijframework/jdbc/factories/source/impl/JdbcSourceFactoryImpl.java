@@ -1,4 +1,4 @@
-package org.brijframework.jdbc.factories.meta.impl;
+package org.brijframework.jdbc.factories.source.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,8 +9,8 @@ import javax.sql.DataSource;
 import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.bean.BeanInfo;
 import org.brijframework.bean.factories.impl.BeanInfoFactoryImpl;
-import org.brijframework.jdbc.JdbcSource;
-import org.brijframework.jdbc.factories.meta.JdbcSourceFactory;
+import org.brijframework.jdbc.factories.source.JdbcSourceFactory;
+import org.brijframework.jdbc.source.JdbcSource;
 import org.brijframework.model.factories.ModelFactory;
 import org.brijframework.support.model.Assignable;
 import org.brijframework.util.asserts.Assertion;

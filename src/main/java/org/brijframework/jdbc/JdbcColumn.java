@@ -13,23 +13,23 @@ public class JdbcColumn extends AbstractJdbc {
 	private String tableSchem; //TABLE_SCHEM String => table schema (may be null) 
 	private String tableName; //TABLE_NAME String => table name 
 	private String columnName; //COLUMN_NAME String => column name 
-	private int dataType; //DATA_TYPE int => SQL type from java.sql.Types 
+	private Integer dataType; //DATA_TYPE Integer => SQL type from java.sql.Types 
 	private String typeName; //TYPE_NAME String => Data source dependent type name, for a UDT the type name is fully qualified
-	private int columnSize; //COLUMN_SIZE int => column size. 
+	private Integer columnSize; //COLUMN_SIZE Integer => column size. 
 	private String bufferLength;//BUFFER_LENGTH is not used. 
-	private int decimalDigits; //DECIMAL_DIGITS int => the number of fractional digits. Null is returned for data types where DECIMAL_DIGITS is not applicable. 
-	private int numPrecRadix; //NUM_PREC_RADIX int => Radix (typically either 10 or 2) 
-	private int nullable;  //NULLABLE int => is NULL allowed. ◦ columnNoNulls - might not allow NULL values 
+	private Integer decimalDigits; //DECIMAL_DIGITS Integer => the number of fractional digits. Null is returned for data types where DECIMAL_DIGITS is not applicable. 
+	private Integer numPrecRadix; //NUM_PREC_RADIX Integer => Radix (typically either 10 or 2) 
+	private Integer nullable;  //NULLABLE Integer => is NULL allowed. ◦ columnNoNulls - might not allow NULL values 
 	/*
 	◦ columnNullable - definitely allows NULL values 
 	◦ columnNullableUnknown - nullability unknown 
 	*/
 	private String remarks; //REMARKS String => comment describing column (may be null) 
-	private String columnDef; //COLUMN_DEF String => default value for the column, which should be interpreted as a string when the value is enclosed in single quotes (may be null) 
-	private int sqlDataType; //SQL_DATA_TYPE int => unused 
-	private int sqlDatetimeSub; //SQL_DATETIME_SUB int => unused 
-	private String charOctetLength; //CHAR_OCTET_LENGTH int => for char types the maximum number of bytes in the column 
-	private int ordinalPosition; //ORDINAL_POSITION int => index of column in table (starting at 1) 
+	private String columnDef; //COLUMN_DEF String => default value for the column, which should be Integererpreted as a string when the value is enclosed in single quotes (may be null) 
+	private Integer sqlDataType; //SQL_DATA_TYPE Integer => unused 
+	private Integer sqlDatetimeSub; //SQL_DATETIME_SUB Integer => unused 
+	private String charOctetLength; //CHAR_OCTET_LENGTH Integer => for char types the maximum number of bytes in the column 
+	private Integer ordinalPosition; //ORDINAL_POSITION Integer => index of column in table (starting at 1) 
 	private String isNullable;  //IS_NULLABLE String => ISO rules are used to determine the nullability for a column. ◦ YES --- if the column can include NULLs 
 	/*	
 	 ◦ NO --- if the column cannot include NULLs 
@@ -38,8 +38,8 @@ public class JdbcColumn extends AbstractJdbc {
 	private String scopeCatalog; //SCOPE_CATALOG String => catalog of table that is the scope of a reference attribute (null if DATA_TYPE isn't REF) 
 	private String scopeSchema; //SCOPE_SCHEMA String => schema of table that is the scope of a reference attribute (null if the DATA_TYPE isn't REF) 
 	private String scopeTable; // SCOPE_TABLE String => table name that this the scope of a reference attribute (null if the DATA_TYPE isn't REF) 
-	private short sqlDateType; //SOURCE_DATA_TYPE short => source type of a distinct type or user-generated Ref type, SQL type from java.sql.Types (null if DATA_TYPE isn't DISTINCT or user-generated REF) 
-	private String sourceDataType; //SOURCE_DATA_TYPE short => source type of a distinct type or user-generated Ref type, SQL type from java.sql.Types (null if DATA_TYPE isn't DISTINCT or user-generated REF) 
+	private Short sqlDateType; //SOURCE_DATA_TYPE Short => source type of a distinct type or user-generated Ref type, SQL type from java.sql.Types (null if DATA_TYPE isn't DISTINCT or user-generated REF) 
+	private String sourceDataType; //SOURCE_DATA_TYPE Short => source type of a distinct type or user-generated Ref type, SQL type from java.sql.Types (null if DATA_TYPE isn't DISTINCT or user-generated REF) 
 	
 	private String isAutoincrement; //IS_AUTOINCREMENT String => Indicates whether this column is auto incremented ◦ YES --- if the column is auto incremented 
 	/*
@@ -111,11 +111,11 @@ public class JdbcColumn extends AbstractJdbc {
 		this.columnName = columnName;
 	}
 
-	public int getDataType() {
+	public Integer getDataType() {
 		return dataType;
 	}
 
-	public void setDataType(int dataType) {
+	public void setDataType(Integer dataType) {
 		this.dataType = dataType;
 	}
 
@@ -127,11 +127,11 @@ public class JdbcColumn extends AbstractJdbc {
 		this.typeName = typeName;
 	}
 
-	public int getColumnSize() {
+	public Integer getColumnSize() {
 		return columnSize;
 	}
 
-	public void setColumnSize(int columnSize) {
+	public void setColumnSize(Integer columnSize) {
 		this.columnSize = columnSize;
 	}
 
@@ -143,27 +143,27 @@ public class JdbcColumn extends AbstractJdbc {
 		this.bufferLength = bufferLength;
 	}
 
-	public int getDecimalDigits() {
+	public Integer getDecimalDigits() {
 		return decimalDigits;
 	}
 
-	public void setDecimalDigits(int decimalDigits) {
+	public void setDecimalDigits(Integer decimalDigits) {
 		this.decimalDigits = decimalDigits;
 	}
 
-	public int getNumPrecRadix() {
+	public Integer getNumPrecRadix() {
 		return numPrecRadix;
 	}
 
-	public void setNumPrecRadix(int numPrecRadix) {
+	public void setNumPrecRadix(Integer numPrecRadix) {
 		this.numPrecRadix = numPrecRadix;
 	}
 
-	public int getNullable() {
+	public Integer getNullable() {
 		return nullable;
 	}
 
-	public void setNullable(int nullable) {
+	public void setNullable(Integer nullable) {
 		this.nullable = nullable;
 	}
 
@@ -183,19 +183,19 @@ public class JdbcColumn extends AbstractJdbc {
 		this.columnDef = columnDef;
 	}
 
-	public int getSqlDataType() {
+	public Integer getSqlDataType() {
 		return sqlDataType;
 	}
 
-	public void setSqlDataType(int sqlDataType) {
+	public void setSqlDataType(Integer sqlDataType) {
 		this.sqlDataType = sqlDataType;
 	}
 
-	public int getSqlDatetimeSub() {
+	public Integer getSqlDatetimeSub() {
 		return sqlDatetimeSub;
 	}
 
-	public void setSqlDatetimeSub(int sqlDatetimeSub) {
+	public void setSqlDatetimeSub(Integer sqlDatetimeSub) {
 		this.sqlDatetimeSub = sqlDatetimeSub;
 	}
 
@@ -207,11 +207,11 @@ public class JdbcColumn extends AbstractJdbc {
 		this.charOctetLength = charOctetLength;
 	}
 
-	public int getOrdinalPosition() {
+	public Integer getOrdinalPosition() {
 		return ordinalPosition;
 	}
 
-	public void setOrdinalPosition(int ordinalPosition) {
+	public void setOrdinalPosition(Integer ordinalPosition) {
 		this.ordinalPosition = ordinalPosition;
 	}
 
@@ -247,11 +247,11 @@ public class JdbcColumn extends AbstractJdbc {
 		this.scopeTable = scopeTable;
 	}
 
-	public short getSqlDateType() {
+	public Short getSqlDateType() {
 		return sqlDateType;
 	}
 
-	public void setSqlDateType(short sqlDateType) {
+	public void setSqlDateType(Short sqlDateType) {
 		this.sqlDateType = sqlDateType;
 	}
 
@@ -306,7 +306,7 @@ public class JdbcColumn extends AbstractJdbc {
 	}
 
 	@JsonIgnore
-	public boolean updateColumn(String colname, String type, int size) throws Exception {
+	public boolean updateColumn(String colname, String type, Integer size) throws Exception {
 		Statement statement = this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE " + this.getTableName() + " CHANGE " + this.getColumnName() + " " + colname + " "
 				+ type + "(" + size + ")";
@@ -328,7 +328,7 @@ public class JdbcColumn extends AbstractJdbc {
 	}
 
 	@JsonIgnore
-	public boolean modifyColumn(String type, int size) throws Exception {
+	public boolean modifyColumn(String type, Integer size) throws Exception {
 		Statement statement = this.getJdbcTable().getStatement();
 		String query = "ALTER TABLE " + this.getTableName() + " MODIFY " + this.getColumnName() + " " + type + "("
 				+ size + ")";

@@ -6,8 +6,9 @@ import java.util.Map;
 
 import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.jdbc.JdbcCatalog;
-import org.brijframework.jdbc.JdbcSource;
 import org.brijframework.jdbc.factories.meta.JdbcCatalogFactory;
+import org.brijframework.jdbc.factories.source.impl.JdbcSourceFactoryImpl;
+import org.brijframework.jdbc.source.JdbcSource;
 import org.brijframework.support.model.Assignable;
 import org.brijframework.support.model.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;
@@ -65,7 +66,6 @@ public class JdbcCatalogFactoryImpl extends AbstractFactory<String,JdbcCatalog> 
 	protected void postregister(String key, JdbcCatalog catalog) {
 		JdbcSource source=JdbcSourceFactoryImpl.getFactory().getJdbcSource(catalog.getSourceCat());
 		if(source!=null) {
-			source.setCatalog(catalog);
 			catalog.setSource(source);
 		}
 	}

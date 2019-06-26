@@ -1,9 +1,14 @@
 package org.brijframework.jdbc;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.brijframework.jdbc.factories.meta.JdbcCatalogFactory;
+import org.brijframework.jdbc.source.JdbcSource;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class JdbcCatalog extends AbstractJdbc {
 
@@ -13,8 +18,11 @@ public class JdbcCatalog extends AbstractJdbc {
 	private static final long serialVersionUID = 1L;
 	private String sourceCat;
 	private String tableCat;
+	
+	@JsonIgnore
 	private JdbcSource source;
 	
+	@JsonIgnore
 	private JdbcCatalogFactory factory;
 
 	private Map<String, JdbcTable> tables;
@@ -46,20 +54,35 @@ public class JdbcCatalog extends AbstractJdbc {
 		this.tables = tables;
 	}
 
+	@JsonIgnore
 	public void setSource(JdbcSource source) {
 		this.source = source;
 	}
 
+	@JsonIgnore
 	public JdbcSource getSource() {
 		return source;
 	}
 
+	@JsonIgnore
 	@Override
 	public JdbcCatalogFactory getFactory() {
 		return factory;
 	}
 
+	@JsonIgnore
 	public void setFactory(JdbcCatalogFactory factory) {
 		this.factory = factory;
+	}
+	
+	@JsonIgnore
+	public boolean makeCatalog() throws Exception {
+		Connection connection=getSource().getConnection();
+		Statement statement=connection.createStatement();
+		String query = "CREATE DATABASE "+getTableCat();
+		System.err.println("Query   : "+query);
+		int result=statement.executeUpdate(query);
+	    System.out.println("Catalog "+getTableCat()+" created successfully...");
+		return result>0;
 	}
 }

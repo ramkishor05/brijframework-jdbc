@@ -1,19 +1,17 @@
-package org.brijframework.jdbc.factories.meta.impl;
+package org.brijframework.jdbc.factories.meta.impl.file;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.jdbc.JdbcCatalog;
-import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcConstants;
 import org.brijframework.jdbc.factories.meta.JdbcMetaFactory;
+import org.brijframework.jdbc.factories.meta.impl.JdbcCatalogFactoryImpl;
 import org.brijframework.support.model.Assignable;
-import org.brijframework.support.model.DepandOn;
 import org.brijframework.util.location.PathUtil;
 import org.brijframework.util.location.StreamUtil;
 
-@DepandOn(depand=JdbcColumnFactoryImpl.class)
 public class JbdcCatalogMetaFileFactory extends AbstractFactory<File,JdbcCatalog> implements JdbcMetaFactory{
 
 	protected JbdcCatalogMetaFileFactory() {
@@ -32,7 +30,13 @@ public class JbdcCatalogMetaFileFactory extends AbstractFactory<File,JdbcCatalog
 	@Override
 	public JbdcCatalogMetaFileFactory loadFactory() {
 		JdbcCatalogFactoryImpl.getFactory().getCache().forEach((key,catalog)->{
-			register(key,catalog);
+			try {
+				if(catalog.getSource().getConnection().getCatalog()!=null && !catalog.getSource().getConnection().getCatalog().isEmpty()) {
+					register(key,catalog);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		});
 		return this;
 	}
@@ -44,24 +48,25 @@ public class JbdcCatalogMetaFileFactory extends AbstractFactory<File,JdbcCatalog
 		}
 		
 		File currentPath=new File(PathUtil.getResourcesContextPath(),data_backup_json_config);
-		File catalogFile=new File(currentPath,catalog.getTableCat());
-		if(!catalogFile.exists()) {
-			catalogFile.mkdirs();
+		if(!currentPath.exists()) {
+			currentPath.mkdirs();
+		}
+		File catalogFile=new File(currentPath,catalog.getTableCat()+".json");
+		if(catalogFile.exists()) {
+			catalogFile.delete();
+		}
+		try {
+			catalogFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		register(catalogFile, catalog);
 	}
 
-	private void writeFile(File catalogFile, String tableKey, JdbcTable table) {
-		File tableFile=new File(catalogFile,table.getTableName()+".json");
-		if(!tableFile.exists()) {
-			try {
-				tableFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	private void writeFile(File catalogFile, JdbcCatalog catalog) {
+		
 		try {
-			StreamUtil.writeJsonToFile(tableFile.toPath(), table);
+			StreamUtil.writeJsonToFile(catalogFile.toPath(), catalog);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,9 +79,7 @@ public class JbdcCatalogMetaFileFactory extends AbstractFactory<File,JdbcCatalog
 
 	@Override
 	protected void postregister(File catalogFile, JdbcCatalog catalog) {
-		catalog.getTables().forEach((tableKey,table)->{
-			writeFile(catalogFile, tableKey, table);
-		});
+		writeFile(catalogFile, catalog);
 	}
 
 }

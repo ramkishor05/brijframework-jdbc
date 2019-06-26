@@ -1,22 +1,20 @@
 package org.brijframework.jdbc.container;
 
 import org.brijframework.group.Group;
-import org.brijframework.jdbc.factories.meta.JdbcMetaFactory;
+import org.brijframework.jdbc.factories.source.JdbcSourceFactory;
 import org.brijframework.jdbc.group.JdbcGroup;
 import org.brijframework.support.model.Assignable;
-import org.brijframework.support.model.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;
 import org.brijframework.util.reflect.ReflectionUtils;
 
-@DepandOn(depand=JdbcBuildContainer.class)
-public class JdbcMetaContainer  extends JdbcContainer {
+public class JdbcSourceContainer extends JdbcContainer{
 
-	private static JdbcMetaContainer container;
+	private static JdbcSourceContainer container;
 
 	@Assignable
-	public static JdbcMetaContainer getContainer() {
+	public static JdbcSourceContainer getContainer() {
 		if (container == null) {
-			container = new JdbcMetaContainer();
+			container = new JdbcSourceContainer();
 		}
 		return container;
 	}
@@ -26,8 +24,8 @@ public class JdbcMetaContainer  extends JdbcContainer {
 	public void init() {
 		try {
 			ReflectionUtils.getClassListFromExternal().forEach(cls -> {
-				if (JdbcMetaFactory.class.isAssignableFrom(cls) && InstanceUtil.isAssignable(cls)) {
-					register((Class<? extends JdbcMetaFactory>) cls);
+				if (JdbcSourceFactory.class.isAssignableFrom(cls) && InstanceUtil.isAssignable(cls)) {
+					register((Class<? extends JdbcSourceFactory>) cls);
 				}
 			});
 		} catch (Exception e) {
@@ -35,8 +33,8 @@ public class JdbcMetaContainer  extends JdbcContainer {
 		}
 		try {
 			ReflectionUtils.getClassListFromInternal().forEach(cls -> {
-				if (JdbcMetaFactory.class.isAssignableFrom(cls) && InstanceUtil.isAssignable(cls)) {
-					register((Class<? extends JdbcMetaFactory>) cls);
+				if (JdbcSourceFactory.class.isAssignableFrom(cls) && InstanceUtil.isAssignable(cls)) {
+					register((Class<? extends JdbcSourceFactory>) cls);
 				}
 			});
 		} catch (Exception e) {

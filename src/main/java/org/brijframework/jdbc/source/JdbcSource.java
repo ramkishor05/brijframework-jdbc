@@ -1,10 +1,11 @@
-package org.brijframework.jdbc;
+package org.brijframework.jdbc.source;
 
 import java.sql.Connection;
 
 import javax.sql.DataSource;
 
-import org.brijframework.jdbc.factories.meta.JdbcSourceFactory;
+import org.brijframework.jdbc.AbstractJdbc;
+import org.brijframework.jdbc.factories.source.JdbcSourceFactory;
 
 public class JdbcSource extends AbstractJdbc{
 
@@ -14,7 +15,6 @@ public class JdbcSource extends AbstractJdbc{
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private DataSource dataSource;
-	private JdbcCatalog catalog;
 	private Connection connection;
 	private JdbcSourceFactory factory;
 
@@ -32,14 +32,6 @@ public class JdbcSource extends AbstractJdbc{
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-	}
-
-	public JdbcCatalog getCatalog() {
-		return catalog;
-	}
-
-	public void setCatalog(JdbcCatalog catalog) {
-		this.catalog = catalog;
 	}
 	
 	public Connection getConnection() throws Exception {

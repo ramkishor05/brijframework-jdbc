@@ -4,11 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.brijframework.jdbc.factories.meta.JdbcTableFactory;
+import org.brijframework.jdbc.source.JdbcSource;
 import org.brijframework.jdbc.util.JdbcUtil;
 import org.brijframework.util.asserts.Assertion;
 
@@ -33,7 +36,9 @@ public class JdbcTable extends AbstractJdbc{
 
 	private Map<String, JdbcColumn> columns;
 	
-	private Map<String, JdbcRefTab> refTabs;
+	private Map<String, JdbcRefTab> foreignKeys;
+	
+	private Map<String, JdbcRefTab> referenKeys;
 	
 	@JsonIgnore
 	private JdbcCatalog catalog;
@@ -132,16 +137,27 @@ public class JdbcTable extends AbstractJdbc{
 		return columns;
 	}
 	
-	public void setRefTabs(Map<String, JdbcRefTab> refTabs) {
-		this.refTabs = refTabs;
+	public void setForeignKeys(Map<String, JdbcRefTab> refTabs) {
+		this.foreignKeys = refTabs;
 	}
 	
-	public Map<String, JdbcRefTab> getRefTabs() {
-		if(refTabs==null) {
-			refTabs=new HashMap<>();
+	public Map<String, JdbcRefTab> getForeignKeys() {
+		if(foreignKeys==null) {
+			foreignKeys=new HashMap<>();
 		}
-		return refTabs;
+		return foreignKeys;
 	}	
+
+	public Map<String, JdbcRefTab> getReferenKeys() {
+		if(referenKeys==null) {
+			referenKeys=new HashMap<>();
+		}
+		return referenKeys;
+	}
+
+	public void setReferenKeys(Map<String, JdbcRefTab> referenKeys) {
+		this.referenKeys = referenKeys;
+	}
 	
 	@JsonIgnore
 	public void setCatalog(JdbcCatalog catalog) {
@@ -273,5 +289,41 @@ public class JdbcTable extends AbstractJdbc{
 		query.append(keyset);
 		query.append(keyval);
 		return executeUpdate(query.toString());
+	}
+	
+	
+	public boolean makeTable() throws Exception {
+		StringBuilder builder = new StringBuilder("CREATE TABLE " + getTableCat() + "." + getTableName());
+		builder.append("(");
+		AtomicInteger count = new AtomicInteger();
+		getColumns().forEach((key, column) -> {
+			builder.append(key);
+			if(nonArgTypes.contains(column.getTypeName())) {
+				builder.append(" " + column.getTypeName());
+			} else if (column.getColumnSize() != null
+					&& column.getColumnSize() > 0) {
+				builder.append(" " + column.getTypeName() + " (" + column.getColumnSize() + ")");
+			} 
+			if (count.incrementAndGet() < getColumns().size()) {
+				builder.append(", ");
+			}
+		});
+		builder.append(")");
+		String query = builder.toString();
+		return this.executeUpdate(query);
+	}
+	
+	public static Set<String> nonArgTypes=new HashSet<String>();
+	static {
+		nonArgTypes.add("CLOB");
+		nonArgTypes.add("BLOB");
+		nonArgTypes.add("TINYBLOB");
+		nonArgTypes.add("DOUBLE");
+		nonArgTypes.add("DATE");
+		nonArgTypes.add("DATETIME");
+		nonArgTypes.add("TIME");
+		nonArgTypes.add("TIMESTAMP");
+		nonArgTypes.add("TIME_WITH_TIMEZONE");
+		nonArgTypes.add("TIMESTAMP_WITH_TIMEZONE");
 	}
 }

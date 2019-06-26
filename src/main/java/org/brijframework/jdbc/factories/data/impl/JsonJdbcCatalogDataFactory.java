@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class JsonJdbcCatalogDataFactory extends AbstractFactory<File,JdbcCatalog>{
 
-
 	public void writeFile(File catalogFile, String tableKey, JdbcTable table) {
 		File tableFile=new File(catalogFile,table.getTableName()+".json");
 		if(!tableFile.exists()) {

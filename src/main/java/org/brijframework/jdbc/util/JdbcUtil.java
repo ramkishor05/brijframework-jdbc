@@ -37,7 +37,11 @@ public class JdbcUtil {
         return getResultList(tables);
     }
 	
-	
+	public static List<Map<String, Object>> getColumnList(Connection conn,String catalog,String table) throws SQLException {
+        DatabaseMetaData md = conn.getMetaData();
+        ResultSet tables = md.getColumns(catalog, null, table, null);
+        return getResultList(tables);
+    }
 	
 	public static List<Map<String, Object>> getResultList( ResultSet tables) throws SQLException{
 		List<Map<String,Object>> listofTable = new ArrayList<Map<String,Object>>();
@@ -46,14 +50,14 @@ public class JdbcUtil {
 		while (tables.next()) {
 			Map<String,Object> rowMap=new HashMap<>();
 			for (int i = 1; i <= cols; i++) {
-				rowMap.put(getJavaVarType(rsmd.getColumnLabel(i)), tables.getObject(i));
+				rowMap.put(getJavaVarKey(rsmd.getColumnLabel(i)), tables.getObject(i));
 			}
 			listofTable.add(rowMap);
 		}
         return listofTable;
 	}
 	
-	private static String getJavaVarType(String key) {
+	private static String getJavaVarKey(String key) {
 		StringBuilder builder=new StringBuilder();
 		String[] keyPoint=key.split("_");
 		for(int index=0;index<keyPoint.length;index++) {
@@ -65,10 +69,27 @@ public class JdbcUtil {
 		}
 		return builder.toString();
 	}
+	public static List<Map<String, Object>> getExportedKeys(Connection conn,String catalog,String table) throws SQLException {
+		DatabaseMetaData md = conn.getMetaData();
+        ResultSet tables = md.getExportedKeys(catalog, null, table);
+        return getResultList(tables);
+	}
 	
-	public static List<Map<String, Object>> foreignKeys(Connection conn,String table) throws SQLException {
+	public static List<Map<String, Object>> getExportedKeys(Connection conn,String table) throws SQLException {
 		DatabaseMetaData md = conn.getMetaData();
         ResultSet tables = md.getExportedKeys(conn.getCatalog(), null, table);
+        return getResultList(tables);
+	}
+	
+	public static List<Map<String, Object>> getImportedKeys(Connection conn,String catalog,String table) throws SQLException {
+		DatabaseMetaData md = conn.getMetaData();
+        ResultSet tables = md.getImportedKeys(catalog, null, table);
+        return getResultList(tables);
+	}
+	
+	public static List<Map<String, Object>> getImportedKeys(Connection conn,String table) throws SQLException {
+		DatabaseMetaData md = conn.getMetaData();
+        ResultSet tables = md.getImportedKeys(conn.getCatalog(), null, table);
         return getResultList(tables);
 	}
 	

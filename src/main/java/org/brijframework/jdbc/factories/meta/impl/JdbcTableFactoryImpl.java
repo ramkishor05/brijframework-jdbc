@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.jdbc.JdbcCatalog;
+import org.brijframework.jdbc.JdbcColumn;
 import org.brijframework.jdbc.JdbcRefTab;
 import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcMeta;
@@ -67,13 +68,33 @@ public class JdbcTableFactoryImpl extends AbstractFactory<String,JdbcTable> impl
 	
 	public void register(JdbcCatalog catalog, Map<String, Object> tableMap) {
 		JdbcTable jdbcTable=InstanceUtil.getInstance(JdbcTable.class, tableMap);
+		String id=catalog.getTableCat()+"."+jdbcTable.getTableName();
 		jdbcTable.setCatalog(catalog);
-		jdbcTable.setId(catalog.getTableCat()+"."+jdbcTable.getTableName());
+		jdbcTable.setId(id);
 		try {
-			for(Map<String, Object> tabRefMap:JdbcUtil.foreignKeys(catalog.getSource().getConnection(), jdbcTable.getTableName())) {
+			for(Map<String, Object> colMap:JdbcUtil.getColumnList(catalog.getSource().getConnection(),catalog.getTableCat(), jdbcTable.getTableName())) {
+				JdbcColumn jdbcTableColumn=InstanceUtil.getInstance(JdbcColumn.class, colMap);
+				jdbcTableColumn.setJdbcTable(jdbcTable);
+				jdbcTableColumn.setId(jdbcTableColumn.getColumnName());
+				jdbcTable.getColumns().put(jdbcTableColumn.getColumnName(), jdbcTableColumn);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			for(Map<String, Object> tabRefMap:JdbcUtil.getExportedKeys(catalog.getSource().getConnection(),catalog.getTableCat(), jdbcTable.getTableName())) {
 				JdbcRefTab jdbcRabRef=InstanceUtil.getInstance(JdbcRefTab.class, tabRefMap);
 				jdbcRabRef.setId(jdbcRabRef.getPkcolumnName());
-				jdbcTable.getRefTabs().put(jdbcRabRef.getPkcolumnName(), jdbcRabRef);
+				jdbcTable.getForeignKeys().put(jdbcRabRef.getPkcolumnName(), jdbcRabRef);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			for(Map<String, Object> tabRefMap:JdbcUtil.getImportedKeys(catalog.getSource().getConnection(),catalog.getTableCat(), jdbcTable.getTableName())) {
+				JdbcRefTab jdbcRabRef=InstanceUtil.getInstance(JdbcRefTab.class, tabRefMap);
+				jdbcRabRef.setId(jdbcRabRef.getPkcolumnName());
+				jdbcTable.getForeignKeys().put(jdbcRabRef.getPkcolumnName(), jdbcRabRef);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,9 +1,12 @@
 package org.brijframework.jdbc.constants;
 
 public class JdbcConstants {
+	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_BUILD_JSON_ENABLE="application.bootstrap.config.jdbc.build.json.enable";
+	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_BUILD_JSON_CATALOG="application.bootstrap.config.jdbc.build.json.catalog";
+	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_BUILD_JSON_LOCATION="application.bootstrap.config.jdbc.build.json.location";
+	
 	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_META_JSON_LOCATION="application.bootstrap.config.jdbc.meta.json.location";
 	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_META_DIFF_JSON_LOCATION="application.bootstrap.config.jdbc.meta.diff.json.location";
-	
 	
 	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_JSON_ENABLE="application.bootstrap.config.jdbc.data.json.enable";
 	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_JSON_CATALOG="application.bootstrap.config.jdbc.data.json.catalog";
