@@ -2,8 +2,6 @@ package org.brijframework.jdbc.factories.build.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.factories.Factory;

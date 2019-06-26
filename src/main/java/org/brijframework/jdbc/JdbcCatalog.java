@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.brijframework.jdbc.factories.meta.JdbcCatalogFactory;
 import org.brijframework.jdbc.source.JdbcSource;
+import org.brijframework.jdbc.util.JdbcUtil;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -78,6 +79,11 @@ public class JdbcCatalog extends AbstractJdbc {
 	@JsonIgnore
 	public boolean makeCatalog() throws Exception {
 		Connection connection=getSource().getConnection();
+		Map<String, Map<String, Object>> catalogMap=JdbcUtil.getCatalogMap(connection);
+		if(catalogMap.containsKey(getTableCat())) {
+			System.err.println("Error   : "+"Catalog already exist.");
+			return false;
+		}
 		Statement statement=connection.createStatement();
 		String query = "CREATE DATABASE "+getTableCat();
 		System.err.println("Query   : "+query);

@@ -46,14 +46,13 @@ public class JdbcSourceFactoryImpl extends AbstractFactory<String,JdbcSource> im
 		for(BeanInfo owner:owners) {
 			DataSource dataSource=ModelFactory.getFactory().getModel(owner);
 			if(dataSource!=null) {
-				register(owner.getId(), dataSource);
+				register(owner.getId(),owner, dataSource);
 			}	
 		}
 		return this;
 	}
 
-	@Override
-	public void register(String id, DataSource dataSource) {
+	public void register(String id, BeanInfo owner, DataSource dataSource) {
 		JdbcSource source=new JdbcSource();
 		source.setId(id);
 		source.setDataSource(dataSource);

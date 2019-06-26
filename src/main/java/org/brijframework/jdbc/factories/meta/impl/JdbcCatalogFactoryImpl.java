@@ -48,6 +48,7 @@ public class JdbcCatalogFactoryImpl extends AbstractFactory<String,JdbcCatalog> 
 			register(key, map);
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}
 	}
 

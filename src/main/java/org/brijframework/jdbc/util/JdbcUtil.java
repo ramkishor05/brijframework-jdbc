@@ -14,6 +14,22 @@ import org.brijframework.jdbc.constants.JdbcMeta;
 import org.brijframework.util.text.StringUtil;
 
 public class JdbcUtil {
+	
+	public static Map<String, Map<String, Object>> getTablesMap(Connection conn) throws SQLException {
+		Map<String, Map<String, Object>> tables=new HashMap<>();
+		for(Map<String, Object> map:getTablesList(conn)) {
+			tables.put((String) map.get("tableName"), map);
+		}
+        return tables;
+    }
+	
+	public static Map<String, Map<String, Object>> getCatalogMap(Connection conn) throws SQLException {
+		Map<String, Map<String, Object>> tables=new HashMap<>();
+		for(Map<String, Object> map:getCatalogList(conn)) {
+			tables.put((String) map.get("tableCat"), map);
+		}
+        return tables;
+    }
      
 	public static List<Map<String, Object>> getTablesList(Connection conn, JdbcMeta ...types) throws SQLException {
 		String [] type=new String[types.length];

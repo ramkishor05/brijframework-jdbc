@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import javax.sql.DataSource;
 
+import org.brijframework.bean.BeanInfo;
 import org.brijframework.jdbc.AbstractJdbc;
 import org.brijframework.jdbc.factories.source.JdbcSourceFactory;
 
@@ -13,19 +14,20 @@ public class JdbcSource extends AbstractJdbc{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String id;
 	private DataSource dataSource;
 	private Connection connection;
+	private BeanInfo owner;
+	
 	private JdbcSourceFactory factory;
 
-	public String getId() {
-		return id;
+	public BeanInfo getOwner() {
+		return owner;
 	}
-
-	public void setId(String id) {
-		this.id = id;
+	
+	public void setOwner(BeanInfo owner) {
+		this.owner = owner;
 	}
-
+	
 	public DataSource getDataSource() {
 		return dataSource;
 	}
