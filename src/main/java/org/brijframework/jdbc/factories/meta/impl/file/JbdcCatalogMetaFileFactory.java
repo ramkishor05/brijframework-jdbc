@@ -74,7 +74,7 @@ public class JbdcCatalogMetaFileFactory extends AbstractFactory<File,JdbcCatalog
 
 	@Override
 	protected void preregister(File key, JdbcCatalog value) {
-		System.err.println("Jdbc TableCatalog: "+key);
+		System.err.println("Jdbc Catalog: "+key);
 	}
 
 	@Override
