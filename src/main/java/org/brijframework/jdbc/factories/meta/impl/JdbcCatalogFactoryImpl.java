@@ -9,8 +9,8 @@ import org.brijframework.jdbc.JdbcCatalog;
 import org.brijframework.jdbc.factories.meta.JdbcCatalogFactory;
 import org.brijframework.jdbc.factories.source.impl.JdbcSourceFactoryImpl;
 import org.brijframework.jdbc.source.JdbcSource;
-import org.brijframework.support.model.Assignable;
-import org.brijframework.support.model.DepandOn;
+import org.brijframework.support.config.Assignable;
+import org.brijframework.support.config.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;
 
 @DepandOn(depand=JdbcSourceFactoryImpl.class)

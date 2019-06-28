@@ -3,7 +3,7 @@ package org.brijframework.jdbc.context;
 import org.brijframework.asm.context.AbstractModuleContext;
 import org.brijframework.jdbc.container.JdbcContainer;
 import org.brijframework.model.context.ModelContext;
-import org.brijframework.support.model.DepandOn;
+import org.brijframework.support.config.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;
 import org.brijframework.util.reflect.ReflectionUtils;
 

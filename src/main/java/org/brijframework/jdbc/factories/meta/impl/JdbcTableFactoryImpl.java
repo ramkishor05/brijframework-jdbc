@@ -11,8 +11,8 @@ import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcMeta;
 import org.brijframework.jdbc.factories.meta.JdbcTableFactory;
 import org.brijframework.jdbc.util.JdbcUtil;
-import org.brijframework.support.model.Assignable;
-import org.brijframework.support.model.DepandOn;
+import org.brijframework.support.config.Assignable;
+import org.brijframework.support.config.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;
 
 @DepandOn(depand=JdbcCatalogFactoryImpl.class)

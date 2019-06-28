@@ -9,8 +9,8 @@ import org.brijframework.jdbc.factories.backup.impl.JdbcCatalogBackupFactory;
 import org.brijframework.jdbc.factories.data.JdbcDataFactory;
 import org.brijframework.jdbc.factories.data.impl.JsonJdbcCatalogDataFactory;
 import org.brijframework.jdbc.factories.meta.impl.JdbcCatalogFactoryImpl;
-import org.brijframework.support.model.Assignable;
-import org.brijframework.support.model.DepandOn;
+import org.brijframework.support.config.Assignable;
+import org.brijframework.support.config.DepandOn;
 import org.brijframework.util.location.PathUtil;
 
 @DepandOn(depand=JdbcCatalogBackupFactory.class)

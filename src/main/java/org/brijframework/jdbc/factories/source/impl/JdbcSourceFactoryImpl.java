@@ -12,7 +12,7 @@ import org.brijframework.bean.factories.impl.BeanInfoFactoryImpl;
 import org.brijframework.jdbc.factories.source.JdbcSourceFactory;
 import org.brijframework.jdbc.source.JdbcSource;
 import org.brijframework.model.factories.ModelFactory;
-import org.brijframework.support.model.Assignable;
+import org.brijframework.support.config.Assignable;
 import org.brijframework.util.asserts.Assertion;
 
 public class JdbcSourceFactoryImpl extends AbstractFactory<String,JdbcSource> implements JdbcSourceFactory<String,JdbcSource>{

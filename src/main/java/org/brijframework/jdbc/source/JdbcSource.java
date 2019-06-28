@@ -18,7 +18,7 @@ public class JdbcSource extends AbstractJdbc{
 	private Connection connection;
 	private BeanInfo owner;
 	
-	private JdbcSourceFactory factory;
+	private JdbcSourceFactory<String,JdbcSource> factory;
 
 	public BeanInfo getOwner() {
 		return owner;
@@ -47,11 +47,11 @@ public class JdbcSource extends AbstractJdbc{
 	}
 
 	@Override
-	public JdbcSourceFactory getFactory() {
+	public JdbcSourceFactory<String,JdbcSource> getFactory() {
 		return factory;
 	}
 	
-	public void setFactory(JdbcSourceFactory factory) {
+	public void setFactory(JdbcSourceFactory<String,JdbcSource> factory) {
 		this.factory = factory;
 	}
 }

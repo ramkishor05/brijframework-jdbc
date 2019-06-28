@@ -10,7 +10,7 @@ import org.brijframework.jdbc.constants.JdbcConstants;
 import org.brijframework.jdbc.factories.build.JdbcBuilderFactory;
 import org.brijframework.jdbc.factories.source.impl.JdbcSourceFactoryImpl;
 import org.brijframework.jdbc.source.JdbcSource;
-import org.brijframework.support.model.Assignable;
+import org.brijframework.support.config.Assignable;
 import org.brijframework.util.location.PathUtil;
 import org.brijframework.util.support.Constants;
 

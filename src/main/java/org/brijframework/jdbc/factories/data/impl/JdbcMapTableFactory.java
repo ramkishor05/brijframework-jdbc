@@ -11,7 +11,7 @@ import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcConstants;
 import org.brijframework.jdbc.factories.data.JdbcDataFactory;
 import org.brijframework.jdbc.factories.meta.impl.JdbcCatalogFactoryImpl;
-import org.brijframework.support.model.Assignable;
+import org.brijframework.support.config.Assignable;
 
 public class JdbcMapTableFactory extends AbstractFactory<String,Map<String,String>> implements JdbcDataFactory {
 	

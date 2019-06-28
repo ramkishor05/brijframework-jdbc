@@ -3,7 +3,7 @@ package org.brijframework.jdbc.container;
 import org.brijframework.group.Group;
 import org.brijframework.jdbc.factories.source.JdbcSourceFactory;
 import org.brijframework.jdbc.group.JdbcGroup;
-import org.brijframework.support.model.Assignable;
+import org.brijframework.support.config.Assignable;
 import org.brijframework.util.reflect.InstanceUtil;
 import org.brijframework.util.reflect.ReflectionUtils;
 
@@ -25,7 +25,7 @@ public class JdbcSourceContainer extends JdbcContainer{
 		try {
 			ReflectionUtils.getClassListFromExternal().forEach(cls -> {
 				if (JdbcSourceFactory.class.isAssignableFrom(cls) && InstanceUtil.isAssignable(cls)) {
-					register((Class<? extends JdbcSourceFactory>) cls);
+					register((Class<? extends JdbcSourceFactory<?,?>>) cls);
 				}
 			});
 		} catch (Exception e) {
@@ -34,7 +34,7 @@ public class JdbcSourceContainer extends JdbcContainer{
 		try {
 			ReflectionUtils.getClassListFromInternal().forEach(cls -> {
 				if (JdbcSourceFactory.class.isAssignableFrom(cls) && InstanceUtil.isAssignable(cls)) {
-					register((Class<? extends JdbcSourceFactory>) cls);
+					register((Class<? extends JdbcSourceFactory<?,?>>) cls);
 				}
 			});
 		} catch (Exception e) {

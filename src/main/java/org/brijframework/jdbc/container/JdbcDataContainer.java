@@ -3,8 +3,8 @@ package org.brijframework.jdbc.container;
 import org.brijframework.group.Group;
 import org.brijframework.jdbc.factories.data.JdbcDataFactory;
 import org.brijframework.jdbc.group.JdbcGroup;
-import org.brijframework.support.model.Assignable;
-import org.brijframework.support.model.DepandOn;
+import org.brijframework.support.config.Assignable;
+import org.brijframework.support.config.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;
 import org.brijframework.util.reflect.ReflectionUtils;
 
