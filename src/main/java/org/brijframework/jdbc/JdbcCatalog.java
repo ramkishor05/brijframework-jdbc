@@ -5,9 +5,8 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.brijframework.jdbc.factories.meta.JdbcCatalogFactory;
 import org.brijframework.jdbc.source.JdbcSource;
-import org.brijframework.jdbc.util.JdbcUtil;
+import org.brijframework.jdbc.util.JdbcModelUtil;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,9 +22,6 @@ public class JdbcCatalog extends AbstractJdbc {
 	@JsonIgnore
 	private JdbcSource source;
 	
-	@JsonIgnore
-	private JdbcCatalogFactory factory;
-
 	private Map<String, JdbcTable> tables;
 
 	public Map<String, JdbcTable> getTables() {
@@ -64,22 +60,11 @@ public class JdbcCatalog extends AbstractJdbc {
 	public JdbcSource getSource() {
 		return source;
 	}
-
-	@JsonIgnore
-	@Override
-	public JdbcCatalogFactory getFactory() {
-		return factory;
-	}
-
-	@JsonIgnore
-	public void setFactory(JdbcCatalogFactory factory) {
-		this.factory = factory;
-	}
 	
 	@JsonIgnore
 	public boolean makeCatalog() throws Exception {
 		Connection connection=getSource().getConnection();
-		Map<String, Map<String, Object>> catalogMap=JdbcUtil.getCatalogMap(connection);
+		Map<String, Map<String, Object>> catalogMap=JdbcModelUtil.getCatalogMap(connection);
 		if(catalogMap.containsKey(getTableCat())) {
 			System.err.println("Error   : "+"Catalog already exist.");
 			return false;
@@ -88,7 +73,7 @@ public class JdbcCatalog extends AbstractJdbc {
 		String query = "CREATE DATABASE "+getTableCat();
 		System.err.println("Query   : "+query);
 		int result=statement.executeUpdate(query);
-	    System.out.println("Catalog "+getTableCat()+" created successfully...");
+	    System.err.println("Catalog "+getTableCat()+" created successfully...");
 		return result>0;
 	}
 }

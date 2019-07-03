@@ -1,12 +1,11 @@
 package org.brijframework.jdbc.source;
 
 import java.sql.Connection;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.brijframework.bean.BeanInfo;
 import org.brijframework.jdbc.AbstractJdbc;
-import org.brijframework.jdbc.factories.source.JdbcSourceFactory;
 
 public class JdbcSource extends AbstractJdbc{
 
@@ -16,16 +15,14 @@ public class JdbcSource extends AbstractJdbc{
 	private static final long serialVersionUID = 1L;
 	private DataSource dataSource;
 	private Connection connection;
-	private BeanInfo owner;
+	private Map<String,Object> beanSource;
 	
-	private JdbcSourceFactory<String,JdbcSource> factory;
-
-	public BeanInfo getOwner() {
-		return owner;
+	public void setBeanSource(Map<String, Object> beanSource) {
+		this.beanSource = beanSource;
 	}
 	
-	public void setOwner(BeanInfo owner) {
-		this.owner = owner;
+	public Map<String, Object> getBeanSource() {
+		return beanSource;
 	}
 	
 	public DataSource getDataSource() {
@@ -44,14 +41,5 @@ public class JdbcSource extends AbstractJdbc{
 			connection=dataSource.getConnection();
 		}
 		return connection;
-	}
-
-	@Override
-	public JdbcSourceFactory<String,JdbcSource> getFactory() {
-		return factory;
-	}
-	
-	public void setFactory(JdbcSourceFactory<String,JdbcSource> factory) {
-		this.factory = factory;
 	}
 }

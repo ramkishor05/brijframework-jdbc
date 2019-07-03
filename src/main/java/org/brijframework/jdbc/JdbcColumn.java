@@ -2,8 +2,6 @@ package org.brijframework.jdbc;
 
 import java.sql.Statement;
 
-import org.brijframework.jdbc.factories.meta.JdbcColumnFactory;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class JdbcColumn extends AbstractJdbc {
@@ -55,8 +53,6 @@ public class JdbcColumn extends AbstractJdbc {
 	@JsonIgnore
 	private JdbcTable jdbcTable;
 	
-	@JsonIgnore
-	private JdbcColumnFactory factory;
 	
 	@JsonIgnore
 	public JdbcTable getJdbcTable() {
@@ -66,17 +62,6 @@ public class JdbcColumn extends AbstractJdbc {
 	@JsonIgnore
 	public void setJdbcTable(JdbcTable jdbcTable) {
 		this.jdbcTable = jdbcTable;
-	}
-
-	@JsonIgnore
-	@Override
-	public JdbcColumnFactory getFactory() {
-		return factory;
-	}
-
-	@JsonIgnore
-	public void setFactory(JdbcColumnFactory factory) {
-		this.factory = factory;
 	}
 
 	public String getTableCat() {

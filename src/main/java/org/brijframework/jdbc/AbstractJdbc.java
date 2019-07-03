@@ -2,7 +2,7 @@ package org.brijframework.jdbc;
 
 import java.io.Serializable;
 
-public abstract class AbstractJdbc implements Jdbc , Serializable{
+public abstract class AbstractJdbc implements JdbcInfo , Serializable{
 	
 	/**
 	 * 

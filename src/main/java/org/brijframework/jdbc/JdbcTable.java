@@ -4,15 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.brijframework.jdbc.factories.meta.JdbcTableFactory;
+import org.brijframework.jdbc.factories.meta.JdbcTableMetaFactory;
 import org.brijframework.jdbc.source.JdbcSource;
-import org.brijframework.jdbc.util.JdbcUtil;
 import org.brijframework.util.asserts.Assertion;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,15 +31,21 @@ public class JdbcTable extends AbstractJdbc{
 
 	private Map<String, JdbcColumn> columns;
 	
-	private Map<String, JdbcRefTab> foreignKeys;
+	private Map<String, JdbcPrimary> primaryKeys;
 	
-	private Map<String, JdbcRefTab> referenKeys;
+	private Map<String, JdbcReferance> foreignKeys;
+	
+	private Map<String, JdbcReferance> exportedKeys;
+	
+	private Map<String, JdbcReferance> importedKeys;
+	
+	private Map<String, JdbcIndex> indexedKeys;
 	
 	@JsonIgnore
 	private JdbcCatalog catalog;
 	
 	@JsonIgnore
-	private JdbcTableFactory factory;
+	private JdbcTableMetaFactory factory;
 
 	public String getTableCat() {
 		return tableCat;
@@ -137,28 +138,72 @@ public class JdbcTable extends AbstractJdbc{
 		return columns;
 	}
 	
-	public void setForeignKeys(Map<String, JdbcRefTab> refTabs) {
+	public void setForeignKeys(Map<String, JdbcReferance> refTabs) {
 		this.foreignKeys = refTabs;
 	}
 	
-	public Map<String, JdbcRefTab> getForeignKeys() {
+	public Map<String, JdbcReferance> getForeignKeys() {
 		if(foreignKeys==null) {
 			foreignKeys=new HashMap<>();
 		}
 		return foreignKeys;
 	}	
 
-	public Map<String, JdbcRefTab> getReferenKeys() {
-		if(referenKeys==null) {
-			referenKeys=new HashMap<>();
+	public Map<String, JdbcPrimary> getPrimaryKeys() {
+		if(primaryKeys==null) {
+			primaryKeys=new HashMap<>();
 		}
-		return referenKeys;
+		return primaryKeys;
 	}
 
-	public void setReferenKeys(Map<String, JdbcRefTab> referenKeys) {
-		this.referenKeys = referenKeys;
+	public void setPrimaryKeys(Map<String, JdbcPrimary> primaryKeys) {
+		this.primaryKeys = primaryKeys;
 	}
 	
+	public Map<String, JdbcReferance> getExportedKeys() {
+		if(exportedKeys==null) {
+			exportedKeys=new HashMap<>();
+		}
+		return exportedKeys;
+	}
+
+	public void setExportedKeys(Map<String, JdbcReferance> exportedKeys) {
+		this.exportedKeys = exportedKeys;
+	}
+
+	public Map<String, JdbcReferance> getImportedKeys() {
+		if(importedKeys==null) {
+			importedKeys=new HashMap<>();
+		}
+		return importedKeys;
+	}
+
+	public void setImportedKeys(Map<String, JdbcReferance> importedKeys) {
+		this.importedKeys = importedKeys;
+	}
+
+	public Map<String, JdbcIndex> getIndexedKeys() {
+		if(indexedKeys==null) {
+			indexedKeys=new HashMap<>();
+		}
+		return indexedKeys;
+	}
+
+	public void setIndexedKeys(Map<String, JdbcIndex> indexedKeys) {
+		this.indexedKeys = indexedKeys;
+	}
+
+
+	@JsonIgnore
+	public JdbcTableMetaFactory getFactory() {
+		return factory;
+	}
+
+	@JsonIgnore
+	public void setFactory(JdbcTableMetaFactory factory) {
+		this.factory = factory;
+	}
+
 	@JsonIgnore
 	public void setCatalog(JdbcCatalog catalog) {
 		this.catalog = catalog;
@@ -167,17 +212,6 @@ public class JdbcTable extends AbstractJdbc{
 	@JsonIgnore
 	public JdbcCatalog getCatalog() {
 		return catalog;
-	}
-	
-	@JsonIgnore
-	@Override
-	public JdbcTableFactory getFactory() {
-		return factory;
-	}
-	
-	@JsonIgnore
-	public void setFactory(JdbcTableFactory factory) {
-		this.factory = factory;
 	}
 	
 	@JsonIgnore
@@ -230,100 +264,5 @@ public class JdbcTable extends AbstractJdbc{
 		return source.getConnection().createStatement();
 	}
 	
-	@JsonIgnore
-	public boolean updateColumn(String oldName,String newName, String type, int size) throws Exception {
-		JdbcColumn column = this.getColumn(oldName);
-		Assertion.notNull(column, "Column not found for given :" + oldName);
-		return column.updateColumn(newName,type,size);
-	}
 	
-	@JsonIgnore
-	public boolean addColumn(String colname, String type, int size) throws Exception {
-		Statement statement= getStatement();
-		String query = "ALTER TABLE "+this.getTableName()+" ADD "+colname+" "+type+"("+size+")";
-		return executeUpdate(statement, query);
-	}
-	
-	@JsonIgnore
-	public boolean setDefaultColumn(String colname, Object value) throws Exception {
-		JdbcColumn column = this.getColumn(colname);
-		Assertion.notNull(column, "column not found for given :" + colname);
-		return column.setDefaultColumn(value);
-	}
-	
-	@JsonIgnore
-	public boolean modifyColumn(String colname, String type, int size) throws Exception {
-		JdbcColumn column = this.getColumn(colname);
-		Assertion.notNull(column, "column not found for given :" + colname);
-		return column.modifyColumn(type,size);
-	}
-	
-	@JsonIgnore
-	public List<Map<String, Object>> getAllRows() throws Exception {
-		String query = "SELECT * FROM "+this.getTableName()+";";
-		ResultSet result=executeQuery(query);
-		return JdbcUtil.getResultList(result);
-	}
-	
-	@JsonIgnore
-	public boolean addRow(Map<String, Object> map) throws Exception {
-		StringBuilder query = new StringBuilder("INSERT INTO "+this.getTableName());
-		StringBuilder keyset =new StringBuilder();
-		StringBuilder keyval =new StringBuilder();
-		keyset.append("(");
-		keyval.append(" VALUES(");
-		AtomicInteger count=new AtomicInteger(0);
-		map.forEach((key,val)->{
-			keyset.append(key);
-			if(val instanceof String)
-			    keyval.append("'"+val+"'");
-			else
-				keyval.append(val);
-			if(count.incrementAndGet()<map.size()) {
-				keyset.append(", ");
-				keyval.append(", ");
-			}
-		});
-		keyset.append(")");
-		keyval.append(")");
-		query.append(keyset);
-		query.append(keyval);
-		return executeUpdate(query.toString());
-	}
-	
-	
-	public boolean makeTable() throws Exception {
-		StringBuilder builder = new StringBuilder("CREATE TABLE " + getTableCat() + "." + getTableName());
-		builder.append("(");
-		AtomicInteger count = new AtomicInteger();
-		getColumns().forEach((key, column) -> {
-			builder.append(key);
-			if(nonArgTypes.contains(column.getTypeName())) {
-				builder.append(" " + column.getTypeName());
-			} else if (column.getColumnSize() != null
-					&& column.getColumnSize() > 0) {
-				builder.append(" " + column.getTypeName() + " (" + column.getColumnSize() + ")");
-			} 
-			if (count.incrementAndGet() < getColumns().size()) {
-				builder.append(", ");
-			}
-		});
-		builder.append(")");
-		String query = builder.toString();
-		return this.executeUpdate(query);
-	}
-	
-	public static Set<String> nonArgTypes=new HashSet<String>();
-	static {
-		nonArgTypes.add("CLOB");
-		nonArgTypes.add("BLOB");
-		nonArgTypes.add("TINYBLOB");
-		nonArgTypes.add("DOUBLE");
-		nonArgTypes.add("DATE");
-		nonArgTypes.add("DATETIME");
-		nonArgTypes.add("TIME");
-		nonArgTypes.add("TIMESTAMP");
-		nonArgTypes.add("TIME_WITH_TIMEZONE");
-		nonArgTypes.add("TIMESTAMP_WITH_TIMEZONE");
-	}
 }

@@ -1,30 +1,18 @@
 package org.brijframework.jdbc.constants;
 
 public class JdbcConstants {
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_BUILD_JSON_ENABLE="application.bootstrap.config.jdbc.build.json.enable";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_BUILD_JSON_CATALOG="application.bootstrap.config.jdbc.build.json.catalog";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_BUILD_JSON_LOCATION="application.bootstrap.config.jdbc.build.json.location";
 	
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_META_JSON_LOCATION="application.bootstrap.config.jdbc.meta.json.location";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_META_DIFF_JSON_LOCATION="application.bootstrap.config.jdbc.meta.diff.json.location";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_SOURCE_MODEL_JSON = "datasource.bootstrap.config.source.model.json";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_SOURCE_BEANS_JSON = "datasource.bootstrap.config.source.beans.json";
 	
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_JSON_ENABLE="application.bootstrap.config.jdbc.data.json.enable";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_JSON_CATALOG="application.bootstrap.config.jdbc.data.json.catalog";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_JSON_LOCATION="application.bootstrap.config.jdbc.data.json.location";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_MODEL_BUILD_JSON = "datasource.bootstrap.config.jdbc.model.build.json";
 	
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_DIFF_JSON_ENABLE="application.bootstrap.config.jdbc.data.diff.json.enable";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_DIFF_JSON_CATALOG="application.bootstrap.config.jdbc.data.diff.json.catalog";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_DIFF_JSON_LOCATION="application.bootstrap.config.jdbc.data.diff.json.location";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_MODEL_RESTORE_JSON = "datasource.bootstrap.config.jdbc.model.restore.json";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_BEANS_RESTORE_JSON = "datasource.bootstrap.config.jdbc.beans.restore.json";
+
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_MODEL_BACKUP_JSON = "datasource.bootstrap.config.jdbc.model.backup.json";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_BEANS_BACKUP_JSON = "datasource.bootstrap.config.jdbc.beans.backup.json";
 	
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_BACKUP_JSON_ENABLE="application.bootstrap.config.jdbc.data.backup.json.enable";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_BACKUP_JSON_CATALOG="application.bootstrap.config.jdbc.data.backup.json.catalog";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_BACKUP_JSON_LOCATION="application.bootstrap.config.jdbc.data.backup.json.location";
-	
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_RESTORE_JSON_ENABLE="application.bootstrap.config.jdbc.data.restore.json.enable";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_RESTORE_JSON_CATALOG="application.bootstrap.config.jdbc.data.restore.json.catalog";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_RESTORE_JSON_LOCATION="application.bootstrap.config.jdbc.data.restore.json.location";
-	
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_MAPPER_JSON_ENABLE="application.bootstrap.config.jdbc.data.mapper.json.enable";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_MAPPER_JSON_CATALOG="application.bootstrap.config.jdbc.data.mapper.json.catalog";
-	public static final String APPLICATION_BOOTSTRAP_CONFIG_JDBC_DATA_MAPPER_JSON_LOCATION="application.bootstrap.config.jdbc.data.mapper.json.location";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_BEANS_MAPPER_JSON = "datasource.bootstrap.config.jdbc.beans.mapper.json";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_MODEL_MAPPER_JSON = "datasource.bootstrap.config.jdbc.model.mapper.json";
 }

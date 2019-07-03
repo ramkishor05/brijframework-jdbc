@@ -8,7 +8,7 @@ import org.brijframework.support.config.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;
 import org.brijframework.util.reflect.ReflectionUtils;
 
-@DepandOn(depand=JdbcBuildContainer.class)
+@DepandOn(depand=JdbcSourceContainer.class)
 public class JdbcMetaContainer  extends JdbcContainer {
 
 	private static JdbcMetaContainer container;

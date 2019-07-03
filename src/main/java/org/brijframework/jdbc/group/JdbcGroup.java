@@ -3,7 +3,7 @@ package org.brijframework.jdbc.group;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.brijframework.asm.group.DefaultGroup;
-import org.brijframework.bean.BeanInfo;
+import org.brijframework.jdbc.JdbcInfo;
 
 public class JdbcGroup implements DefaultGroup {
 
@@ -12,7 +12,7 @@ public class JdbcGroup implements DefaultGroup {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Object groupKey;
-	private ConcurrentHashMap<String,BeanInfo> cache=new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String,JdbcInfo> cache=new ConcurrentHashMap<>();
 	
 	public JdbcGroup(Object groupKey) {
 		this.groupKey=groupKey;
@@ -24,7 +24,7 @@ public class JdbcGroup implements DefaultGroup {
 	}
 
 	@Override
-	public ConcurrentHashMap<String,BeanInfo> getCache() {
+	public ConcurrentHashMap<String,JdbcInfo> getCache() {
 		return cache;
 	}
 

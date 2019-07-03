@@ -1,7 +1,7 @@
 package org.brijframework.jdbc.factories.meta;
 
-import org.brijframework.jdbc.factories.meta.JdbcMetaFactory;
+import org.brijframework.jdbc.factories.JdbcFactory;
 
-public interface JdbcQueryFacory extends JdbcMetaFactory{
+public interface JdbcQueryFacory extends JdbcFactory{
 
 }
