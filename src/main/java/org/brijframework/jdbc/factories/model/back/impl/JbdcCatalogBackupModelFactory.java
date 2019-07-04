@@ -9,7 +9,7 @@ import java.util.Map;
 import org.brijframework.jdbc.JdbcCatalog;
 import org.brijframework.jdbc.config.ResourcesJdbcConfig;
 import org.brijframework.jdbc.constants.JdbcConstants;
-import org.brijframework.jdbc.factories.meta.JdbcMetaFactory;
+import org.brijframework.jdbc.factories.model.JdbcMetaFactory;
 import org.brijframework.jdbc.factories.model.impl.JdbcCatalogModelFactoryImpl;
 import org.brijframework.jdbc.factories.model.impl.JsonJdbcCatalogMetaFactory;
 import org.brijframework.support.config.Assignable;

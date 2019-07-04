@@ -10,7 +10,6 @@ import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.jdbc.JdbcCatalog;
 import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.util.JdbcBeanUtil;
-import org.brijframework.jdbc.util.JdbcModelUtil;
 import org.brijframework.util.location.StreamUtil;
 
 import com.fasterxml.jackson.core.type.TypeReference;

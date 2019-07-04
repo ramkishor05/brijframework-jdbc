@@ -11,7 +11,7 @@ import org.brijframework.jdbc.JdbcPrimary;
 import org.brijframework.jdbc.JdbcReferance;
 import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcMeta;
-import org.brijframework.jdbc.factories.meta.JdbcCatalogMetaFactory;
+import org.brijframework.jdbc.factories.model.JdbcCatalogMetaFactory;
 import org.brijframework.jdbc.source.JdbcSource;
 import org.brijframework.jdbc.util.JdbcModelUtil;
 import org.brijframework.support.config.Assignable;

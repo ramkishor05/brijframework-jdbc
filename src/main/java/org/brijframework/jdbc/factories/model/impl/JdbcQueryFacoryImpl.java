@@ -2,7 +2,7 @@ package org.brijframework.jdbc.factories.model.impl;
 
 import org.brijframework.asm.factories.AbstractFactory;
 import org.brijframework.jdbc.JdbcCatalog;
-import org.brijframework.jdbc.factories.meta.JdbcQueryFacory;
+import org.brijframework.jdbc.factories.model.JdbcQueryFacory;
 
 public class JdbcQueryFacoryImpl extends AbstractFactory<String,JdbcCatalog>  implements JdbcQueryFacory {
 

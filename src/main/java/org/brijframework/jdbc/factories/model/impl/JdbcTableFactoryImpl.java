@@ -10,7 +10,7 @@ import org.brijframework.jdbc.JdbcPrimary;
 import org.brijframework.jdbc.JdbcReferance;
 import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.constants.JdbcMeta;
-import org.brijframework.jdbc.factories.meta.JdbcTableMetaFactory;
+import org.brijframework.jdbc.factories.model.JdbcTableMetaFactory;
 import org.brijframework.jdbc.util.JdbcModelUtil;
 import org.brijframework.support.config.DepandOn;
 import org.brijframework.util.reflect.InstanceUtil;

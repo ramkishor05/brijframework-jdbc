@@ -6,18 +6,21 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.brijframework.jdbc.JdbcCatalog;
-import org.brijframework.jdbc.util.JdbcBeanUtil;
+import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.util.asserts.Assertion;
 
 public class JdbcUpdate{
 
-	JdbcCatalog catalog;
-	StringBuilder statement=new StringBuilder();
-	Map<String, Object> parameter=new HashMap<>();
+	private JdbcCatalog catalog;
+	private StringBuilder statement=new StringBuilder();
+	private Map<String, Object> parameter=new HashMap<>();
+	private JdbcTable table;
 	
 	public JdbcUpdate(JdbcCatalog catalog,String table) {
 		this.catalog=catalog;
 		Assertion.notNull(this.catalog, "Catalog is reqired");
+		this.table=this.catalog.getTables().get(table);
+		Assertion.notNull(this.table, "Table not found for id: "+table+" in  catalog : "+this.catalog.getSourceCat());
 		this.statement.append("UPDATE "+table+" SET ");
 	} 
 	
@@ -99,14 +102,12 @@ public class JdbcUpdate{
 		return this.qual.toString();
 	}
 	
-	public boolean run() {
+	public boolean execute() {
 		try {
-			return catalog.getSource().getConnection().createStatement().execute(query());
+			return table.executeUpdate(query());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;

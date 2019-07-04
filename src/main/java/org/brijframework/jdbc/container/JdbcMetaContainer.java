@@ -1,7 +1,7 @@
 package org.brijframework.jdbc.container;
 
 import org.brijframework.group.Group;
-import org.brijframework.jdbc.factories.meta.JdbcMetaFactory;
+import org.brijframework.jdbc.factories.model.JdbcMetaFactory;
 import org.brijframework.jdbc.group.JdbcGroup;
 import org.brijframework.support.config.Assignable;
 import org.brijframework.support.config.DepandOn;

@@ -1,4 +1,4 @@
-package org.brijframework.jdbc.factories.meta;
+package org.brijframework.jdbc.factories.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;

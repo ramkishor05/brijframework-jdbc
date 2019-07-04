@@ -50,16 +50,16 @@ public class JdbcContext extends AbstractModuleContext{
 	}
 	
 	@Override
-	public void startup() {
+	public void start() {
 		System.err.println("JdbcContext startup processing...");
-		super.startup();
+		super.start();
 		System.err.println("JdbcContext startup completed....");
 	}
 
 	@Override
-	public void destory() {
+	public void stop() {
 		System.err.println("JdbcContext destory processing...");
-		super.destory();
+		super.stop();
 		System.err.println("JdbcContext destory completed....");
 	}
 	
@@ -120,7 +120,7 @@ public class JdbcContext extends AbstractModuleContext{
 	}
 
 	@Override
-	protected void loadConfig() {
+	protected void load() {
 		System.err.println("=============================Datasource Configration startup=========================");
 		
 		Properties configration=getProperties();

@@ -14,7 +14,7 @@ import org.brijframework.bean.factories.json.JsonBeanInfoFactory;
 import org.brijframework.bean.info.BeanInfo;
 import org.brijframework.jdbc.config.ResourcesJdbcConfig;
 import org.brijframework.jdbc.constants.JdbcConstants;
-import org.brijframework.jdbc.factories.meta.JdbcSourceFactory;
+import org.brijframework.jdbc.factories.model.JdbcSourceFactory;
 import org.brijframework.jdbc.source.JdbcSource;
 import org.brijframework.support.config.Assignable;
 import org.brijframework.util.asserts.Assertion;
@@ -77,6 +77,7 @@ public class JdbcSourceFactoryImpl extends AbstractFactory<String,JdbcSource> im
 		return source.getDataSource().getConnection();
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public JdbcSourceFactoryImpl loadFactory() {
 		List<ResourcesJdbcConfig> configs=configration();

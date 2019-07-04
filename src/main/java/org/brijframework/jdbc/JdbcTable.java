@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.brijframework.jdbc.factories.meta.JdbcTableMetaFactory;
+import org.brijframework.jdbc.factories.model.JdbcTableMetaFactory;
 import org.brijframework.jdbc.source.JdbcSource;
 import org.brijframework.util.asserts.Assertion;
 

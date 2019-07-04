@@ -1,22 +1,27 @@
 package org.brijframework.jdbc.template;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.brijframework.jdbc.JdbcCatalog;
+import org.brijframework.jdbc.JdbcTable;
+import org.brijframework.jdbc.util.JdbcBeanUtil;
 import org.brijframework.util.asserts.Assertion;
 
 public class JdbcFetch extends JdbcQualifier{
 	JdbcCatalog catalog;
-	String table;
+	JdbcTable table;
 	StringBuilder statement=new StringBuilder("SELECT ");
 	List<String> parameter=new ArrayList<>();
 	
 	public JdbcFetch(JdbcCatalog catalog,String table) {
 		this.catalog=catalog;
 		Assertion.notNull(this.catalog, "Catalog is reqired");
-		this.table=table;
+		this.table=this.catalog.getTables().get(table);
+		Assertion.notNull(this.table, "Table not found. this is reqired");
 	} 
 	
 	public JdbcFetch selected(String key) {
@@ -37,7 +42,7 @@ public class JdbcFetch extends JdbcQualifier{
 				statement.append(" , ");
 			}
 		});
-		statement.append(" FROM ");
+		statement.append(" FROM "+this.table.getTableName()+" ");
 		statement.append(getQualifier());
 		return statement.toString();
 	}
@@ -102,6 +107,26 @@ public class JdbcFetch extends JdbcQualifier{
 	public String getQualifier() {
 		return this.qual.toString();
 	}
+
+	public Map<String,Object> unique() {
+		try {
+			ResultSet result=table.executeQuery(query());
+			List<Map<String, Object>>  list=JdbcBeanUtil.getDataResultList(result);
+			return list.iterator().next();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
+	public List<Map<String, Object>> list() {
+		try {
+			ResultSet result=table.executeQuery(query());
+			return JdbcBeanUtil.getDataResultList(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }

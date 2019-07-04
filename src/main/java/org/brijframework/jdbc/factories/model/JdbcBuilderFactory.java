@@ -1,4 +1,4 @@
-package org.brijframework.jdbc.factories.build;
+package org.brijframework.jdbc.factories.model;
 
 import org.brijframework.jdbc.factories.JdbcFactory;
 
