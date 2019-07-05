@@ -13,6 +13,9 @@ public class JdbcConstants {
 	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_MODEL_BACKUP_JSON = "datasource.bootstrap.config.jdbc.model.backup.json";
 	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_BEANS_BACKUP_JSON = "datasource.bootstrap.config.jdbc.beans.backup.json";
 	
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_MODEL_DIFF_JSON = "datasource.bootstrap.config.jdbc.model.diff.json";
+	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_BEANS_DIFF_JSON = "datasource.bootstrap.config.jdbc.beans.diff.json";
+	
 	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_BEANS_MAPPER_JSON = "datasource.bootstrap.config.jdbc.beans.mapper.json";
 	public static final String DATASOURCE_BOOTSTRAP_CONFIG_JDBC_MODEL_MAPPER_JSON = "datasource.bootstrap.config.jdbc.model.mapper.json";
 }

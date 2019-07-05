@@ -11,12 +11,12 @@ import org.brijframework.jdbc.config.ResourcesJdbcConfig;
 import org.brijframework.jdbc.constants.JdbcConstants;
 import org.brijframework.jdbc.factories.model.JdbcMetaFactory;
 import org.brijframework.jdbc.factories.model.impl.JdbcCatalogModelFactoryImpl;
-import org.brijframework.jdbc.factories.model.impl.JsonJdbcCatalogMetaFactory;
+import org.brijframework.jdbc.factories.model.impl.AbstractJdbcCatalogModelFactory;
 import org.brijframework.support.config.Assignable;
 import org.brijframework.util.location.PathUtil;
 import org.brijframework.util.reflect.InstanceUtil;
 
-public class JbdcCatalogBackupModelFactory extends JsonJdbcCatalogMetaFactory implements JdbcMetaFactory{
+public class JbdcCatalogBackupModelFactory extends AbstractJdbcCatalogModelFactory implements JdbcMetaFactory{
 
 	protected JbdcCatalogBackupModelFactory() {
 	}

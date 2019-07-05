@@ -14,7 +14,7 @@ import org.brijframework.jdbc.factories.model.JdbcMetaFactory;
 import org.brijframework.jdbc.factories.model.back.impl.JbdcCatalogBackupModelFactory;
 import org.brijframework.jdbc.factories.model.impl.JdbcCatalogModelFactoryImpl;
 import org.brijframework.jdbc.factories.model.impl.JdbcSourceFactoryImpl;
-import org.brijframework.jdbc.factories.model.impl.JsonJdbcCatalogMetaFactory;
+import org.brijframework.jdbc.factories.model.impl.AbstractJdbcCatalogModelFactory;
 import org.brijframework.jdbc.source.JdbcSource;
 import org.brijframework.support.config.Assignable;
 import org.brijframework.support.config.DepandOn;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @DepandOn(depand=JbdcCatalogBackupModelFactory.class)
-public class JdbcCatalogRestoreModelFactory extends JsonJdbcCatalogMetaFactory implements JdbcMetaFactory{
+public class JdbcCatalogRestoreModelFactory extends AbstractJdbcCatalogModelFactory implements JdbcMetaFactory{
 
 	protected JdbcCatalogRestoreModelFactory() {
 		

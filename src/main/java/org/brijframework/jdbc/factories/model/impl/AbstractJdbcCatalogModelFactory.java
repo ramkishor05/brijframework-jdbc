@@ -7,7 +7,7 @@ import org.brijframework.jdbc.JdbcCatalog;
 import org.brijframework.jdbc.util.JdbcBeanUtil;
 import org.brijframework.util.location.StreamUtil;
 
-public abstract class JsonJdbcCatalogMetaFactory extends AbstractFactory<File,JdbcCatalog>{
+public abstract class AbstractJdbcCatalogModelFactory extends AbstractFactory<File,JdbcCatalog>{
 
 	public void build(File catalogFile, JdbcCatalog catalog) {
 		try {
