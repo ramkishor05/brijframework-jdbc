@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.brijframework.jdbc.factories.model.JdbcTableMetaFactory;
 import org.brijframework.jdbc.source.JdbcSource;
@@ -216,7 +217,12 @@ public class JdbcTable extends AbstractJdbc{
 	
 	@JsonIgnore
 	public JdbcColumn getColumn(String key) {
-		return getColumns().get(key);
+		for (Entry<String, JdbcColumn> entry : getColumns().entrySet()) {
+			if(entry.getKey().equalsIgnoreCase(key)) {
+				return entry.getValue();
+			}
+		}
+		return null;
 	}
 	
 	@JsonIgnore
@@ -243,7 +249,7 @@ public class JdbcTable extends AbstractJdbc{
 		try {
 			System.err.println("Query        :" + query);
 			result = st.executeQuery(query);
-			System.err.println("Query OK, " + result.getFetchSize() + " rows affected");
+			System.err.println("Query OK, " + result.getFetchSize() + " rows fetched");
 		} catch (SQLException e) {
 			System.err.println("Query Error, "+e.getMessage());
 		}
@@ -257,11 +263,19 @@ public class JdbcTable extends AbstractJdbc{
 	}
 	
 	@JsonIgnore
+	public ResultSet executeQuery(String query,int fatch,int limit) throws Exception {
+		Statement statement= getStatement();
+		statement.setFetchSize(fatch);
+		statement.setMaxRows(limit);
+		return executeQuery(statement, query);
+	}
+	
+	@JsonIgnore
 	public Statement getStatement() throws Exception {
 		JdbcTable table = this;
 		JdbcSource source = table.getCatalog().getSource();
 		Assertion.notNull(source, "Source not found ");
-		return source.getConnection().createStatement();
+		return source.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	}
 	
 	

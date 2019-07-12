@@ -1,63 +1,81 @@
 package org.brijframework.jdbc.template;
-public class JdbcQualifier {
+public class JdbcQualifier<T> {
 	StringBuilder qual=new StringBuilder();
 	
-	public JdbcQualifier where() {
+	@SuppressWarnings("unchecked")
+	public T where() {
 		qual.append(" WHERE ");
-		return this;
+		return (T) this;
 	}
 
-	public JdbcQualifier equalTo(String key,Object value) {
+	@SuppressWarnings("unchecked")
+	public T equalTo(String key,Object value) {
 		qual.append(""+ key+ " = "+value);
-		return this;
+		return (T) this;
 	}
 	
-	public JdbcQualifier notEqualTo(String key,Object value) {
+	@SuppressWarnings("unchecked")
+	public T notEqualTo(String key,Object value) {
 		qual.append(""+ key+ " != "+value);
-		return this;
+		return (T) this;
 	}
 	
-	public JdbcQualifier greaterThan(String key,Object value) {
+	@SuppressWarnings("unchecked")
+	public T greaterThan(String key,Object value) {
 		qual.append(""+ key+ " > "+value);
-		return this;
+		return (T) this;
 	}
 	
-	public JdbcQualifier notGreaterThan(String key,Object value) {
+	@SuppressWarnings("unchecked")
+	public T notGreaterThan(String key,Object value) {
 		qual.append(""+ key+ " >= "+value);
-		return this;
+		return (T) this;
 	}
 	
-	public JdbcQualifier greaterThanEqualTo(String key,Object value) {
+	@SuppressWarnings("unchecked")
+	public T greaterThanEqualTo(String key,Object value) {
 		qual.append(""+ key+ " >= "+value);
-		return this;
+		return (T) this;
 	}
 	
-	public JdbcQualifier lessThan(String key,Object value) {
+	@SuppressWarnings("unchecked")
+	public T lessThan(String key,Object value) {
 		qual.append(""+ key+ " < "+value);
-		return this;
+		return (T) this;
 	}
 	
-	public JdbcQualifier notLessThan(String key,Object value) {
+	@SuppressWarnings("unchecked")
+	public T notLessThan(String key,Object value) {
 		qual.append(""+ key+ " !< "+value);
-		return this;
+		return (T) this;
 	}
 	
-	public JdbcQualifier lessThanEqualTo(String key,Object value) {
+	@SuppressWarnings("unchecked")
+	public T lessThanEqualTo(String key,Object value) {
 		qual.append(""+ key+ " <= "+value);
-		return this;
+		return (T) this;
 	}
 
-	public JdbcQualifier and() {
+	@SuppressWarnings("unchecked")
+	public T and() {
 		qual.append(" AND ");
-		return this;
+		return (T) this;
 	}
 	
-	public JdbcQualifier or() {
+	@SuppressWarnings("unchecked")
+	public T or() {
 		qual.append(" OR ");
-		return this;
+		return (T) this;
 	}
 	
 	public String getQualifier() {
 		return this.qual.toString();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public T setQualifier(String qual) {
+		this.qual=new StringBuilder(qual);
+		return (T) this;
+	}
+	
 }

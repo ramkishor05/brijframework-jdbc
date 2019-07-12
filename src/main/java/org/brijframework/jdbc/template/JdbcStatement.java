@@ -18,4 +18,8 @@ public class JdbcStatement {
 	public JdbcUpdate update(String table) {
 		return new JdbcUpdate(catalog, table);
 	}
+	
+	public JdbcInsert insert(String table) {
+		return new JdbcInsert(catalog, table);
+	}
 }

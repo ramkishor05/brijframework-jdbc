@@ -5,17 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 import org.brijframework.jdbc.JdbcCatalog;
 import org.brijframework.jdbc.JdbcTable;
 import org.brijframework.jdbc.util.JdbcBeanUtil;
 import org.brijframework.util.asserts.Assertion;
 
-public class JdbcFetch extends JdbcQualifier{
-	JdbcCatalog catalog;
-	JdbcTable table;
-	StringBuilder statement=new StringBuilder("SELECT ");
-	List<String> parameter=new ArrayList<>();
+public class JdbcFetch extends JdbcQualifier<JdbcFetch>{
+	private  JdbcCatalog catalog;
+	private  JdbcTable table;
+	private  StringBuilder statement;
+	private  List<String> parameter=new ArrayList<>();
+	private Integer limit=0;
+	private Integer offset=0;
 	
 	public JdbcFetch(JdbcCatalog catalog,String table) {
 		this.catalog=catalog;
@@ -24,8 +27,22 @@ public class JdbcFetch extends JdbcQualifier{
 		Assertion.notNull(this.table, "Table not found. this is reqired");
 	} 
 	
-	public JdbcFetch selected(String key) {
+	public JdbcFetch fatchProperty(String key) {
 		this.parameter.add(key);
+		return this;
+	}
+	
+	public JdbcFetch fatchProperties(List<String> properties) {
+		for (String entry : properties) {
+			fatchProperty(entry);
+		}
+		return this;
+	}
+	
+	public JdbcFetch fatchProperties(String ...properties) {
+		for (String entry : properties) {
+			fatchProperty(entry);
+		}
 		return this;
 	}
 	
@@ -34,7 +51,11 @@ public class JdbcFetch extends JdbcQualifier{
 		return this;
 	}
 	
-	public String query() {
+	public String fatchQuery() {
+		if(parameter.isEmpty()) {
+			return "";
+		}
+		statement=new StringBuilder("SELECT ");
 		AtomicInteger count=new AtomicInteger(parameter.size());
 		parameter.forEach((key)->{
 			statement.append(key);
@@ -47,70 +68,22 @@ public class JdbcFetch extends JdbcQualifier{
 		return statement.toString();
 	}
 	
-	StringBuilder qual=new StringBuilder();
-	
-	public JdbcFetch where() {
-		qual.append(" WHERE ");
-		return this;
-	}
-
-	public JdbcFetch equalTo(String key,Object value) {
-		qual.append(""+ key+ " = "+value);
-		return this;
+	public String countQuery() {
+		statement=new StringBuilder("SELECT count(*) FROM "+this.table.getTableName());
+		statement.append(getQualifier());
+		return statement.toString();
 	}
 	
-	public JdbcFetch notEqualTo(String key,Object value) {
-		qual.append(""+ key+ " != "+value);
-		return this;
+	public int countRows() throws Exception {
+		ResultSet result=table.executeQuery(countQuery());
+		result.next();
+		return result.getInt(1);
 	}
 	
-	public JdbcFetch greaterThan(String key,Object value) {
-		qual.append(""+ key+ " > "+value);
-		return this;
-	}
-	
-	public JdbcFetch notGreaterThan(String key,Object value) {
-		qual.append(""+ key+ " >= "+value);
-		return this;
-	}
-	
-	public JdbcFetch greaterThanEqualTo(String key,Object value) {
-		qual.append(""+ key+ " >= "+value);
-		return this;
-	}
-	
-	public JdbcFetch lessThan(String key,Object value) {
-		qual.append(""+ key+ " < "+value);
-		return this;
-	}
-	
-	public JdbcQualifier notLessThan(String key,Object value) {
-		qual.append(""+ key+ " !< "+value);
-		return this;
-	}
-	
-	public JdbcFetch lessThanEqualTo(String key,Object value) {
-		qual.append(""+ key+ " <= "+value);
-		return this;
-	}
-
-	public JdbcFetch and() {
-		qual.append(" AND ");
-		return this;
-	}
-	
-	public JdbcFetch or() {
-		qual.append(" OR ");
-		return this;
-	}
-	
-	public String getQualifier() {
-		return this.qual.toString();
-	}
 
 	public Map<String,Object> unique() {
 		try {
-			ResultSet result=table.executeQuery(query());
+			ResultSet result=table.executeQuery(fatchQuery());
 			List<Map<String, Object>>  list=JdbcBeanUtil.getDataResultList(result);
 			return list.iterator().next();
 		} catch (Exception e) {
@@ -121,7 +94,7 @@ public class JdbcFetch extends JdbcQualifier{
 	
 	public List<Map<String, Object>> list() {
 		try {
-			ResultSet result=table.executeQuery(query());
+			ResultSet result=table.executeQuery(fatchQuery());
 			return JdbcBeanUtil.getDataResultList(result);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,4 +102,46 @@ public class JdbcFetch extends JdbcQualifier{
 		return null;
 	}
 	
+	public void forBatch(Consumer<List<Map<String, Object>>> action) {
+		try {
+			int count=countRows();
+			for(int offset=this.offset; offset<=count;offset=offset+limit) {
+				String query="";
+				if(limit>0) {
+					query=fatchQuery()+" LIMIT "+(limit)+" OFFSET "+(offset);
+				}else {
+					query=fatchQuery();
+				}
+			    ResultSet result=table.executeQuery(query);
+			    action.accept(JdbcBeanUtil.getDataResultList(result));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void forEach(Consumer<Map<String, Object>> action) {
+		try {
+			ResultSet result=table.executeQuery(fatchQuery());
+			for(Map<String, Object> row:JdbcBeanUtil.getDataResultList(result)) {
+				action.accept(row);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean isFatch() {
+		return !parameter.isEmpty();
+	}
+
+	public JdbcFetch limit(Integer limit) {
+		this.limit=limit;
+		return this;
+	}
+	
+	public JdbcFetch offset(Integer offset) {
+		this.offset=offset;
+		return this;
+	}
 }

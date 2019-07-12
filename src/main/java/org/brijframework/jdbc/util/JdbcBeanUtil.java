@@ -129,7 +129,10 @@ public class JdbcBeanUtil {
 		while (tables.next()) {
 			Map<String,Object> rowMap=new HashMap<>();
 			for (int i = 1; i <= cols; i++) {
-				rowMap.put(rsmd.getColumnLabel(i), tables.getObject(i));
+				try {
+				   rowMap.put(rsmd.getColumnLabel(i), tables.getObject(i));
+				}catch (Exception e) {
+				}
 			}
 			listofTable.add(rowMap);
 		}

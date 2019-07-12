@@ -44,16 +44,7 @@ public class JdbcTemplate {
 		return false;
 	}
 	
-	public boolean update(String tableId,Map<String, Object> params){
-		JdbcTable table= getCatalog().getTables().get(tableId);
-		Assertion.notNull(table, "No such type of table found for given id :"+tableId);
-		try {
-			return JdbcBeanUtil.updateObject(table,params);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	
 
 	public JdbcUpdate update(String tableId) {
 		JdbcTable table= getCatalog().getTables().get(tableId);
